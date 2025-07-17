@@ -1,3 +1,4 @@
+import LinkButton from "@/components/molecules/link-button/linkButton.molecule";
 import { Button } from "@/components/ui/button";
 // import Image from "next/image";
 
@@ -7,6 +8,7 @@ export default function Home() {
      <Button className="cursor-pointer">
       Jacob Murphy
      </Button>
+     <LinkButton href="/about" active={false} text="About Me" />
     </div>
   );
 }
