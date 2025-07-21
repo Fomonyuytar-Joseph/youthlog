@@ -22,15 +22,16 @@ const navLinkData = [
     icon: <LayoutDashboard />,
   },
   {
-    title: "Finance",
-    href: "/finance",
-    icon: <HandCoins />,
-  },
-  {
     title: "Members",
     href: "/members",
     icon: <UsersRound />,
   },
+  {
+    title: "Finance",
+    href: "/finance",
+    icon: <HandCoins />,
+  },
+  
   {
     title: "Attendance",
     href: "/attendance",
