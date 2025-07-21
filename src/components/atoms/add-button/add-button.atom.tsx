@@ -10,7 +10,7 @@ interface AddButtonProps {
 const AddButton: React.FC<AddButtonProps> = ({ onClick, text }) => {
   return (
     <Button
-      className="rounded-md flex gap-2 py-5 text-white bg-primary w-fit text-base items-center justify-center"
+      className="rounded-md flex gap-2 py-5 text-white bg-primary w-fit text-base items-center justify-center cursor-pointer"
       onClick={onClick}
     >
       <CirclePlus className={"!w-5 !h-5"}/>
