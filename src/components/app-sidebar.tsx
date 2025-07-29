@@ -47,7 +47,7 @@ const navLinkData = [
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
 
-  console.log("AppSidebar pathname:", pathname);
+  // console.log("AppSidebar pathname:", pathname);
   return (
     <Sidebar {...props}>
       <SidebarHeader className="hover:bg-transparent">
