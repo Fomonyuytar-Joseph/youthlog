@@ -1,12 +1,8 @@
-import MembersPage from '@/components/organisms/members/membersPage.organism'
-import React from 'react'
+import MembersPage from "@/components/organisms/members/membersPage.organism";
+import React from "react";
 
 const MembersTemplate = () => {
-  return (
-    <div>
-        <MembersPage/>
-    </div>
-  )
-}
+  return <MembersPage />;
+};
 
-export default MembersTemplate
+export default MembersTemplate;

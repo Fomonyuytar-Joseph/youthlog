@@ -9,8 +9,8 @@ const MembersPage = () => {
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
-        {/* <h3 className="text-2xl font-semibold text-slate-900">Members</h3> */}
         <AddButton text="members" onClick={() => setIsAddModalOpen(true)} />
+        <h3 className="text-base font-semibold text-slate-500">Total Youths: 100</h3>
       </div>
       <MembersTable />
       {isAddModalOpen && <AddMemberModal isOpen={isAddModalOpen} setIsOpen={setIsAddModalOpen} />}
