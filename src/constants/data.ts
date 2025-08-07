@@ -1,3 +1,5 @@
+import { MembersType } from "@/types/members.type";
+
 export const chartData = [
   { day: "Jun 17", attendees: 20 },
   { day: "Jun 24", attendees: 25 },
@@ -48,5 +50,48 @@ export const transactionsData = [
     amount: 1500,
     date: "Jul 4, 2025",
     type: "expense",
+  },
+];
+
+export const membersDummyData: MembersType[] = [
+  {
+    id: "m5gr84i9",
+    name: "Jerome Bradley",
+    status: "active",
+    phoneNumber: "651273636",
+    address: "Bokwaongo Market",
+    role: ["member", "leader"],
+  },
+  {
+    id: "3u1reuv4",
+    name: "Nancy Turner",
+    status: "inactive",
+    phoneNumber: "651273636",
+    address: "Bokwaongo Market",
+    role: ["member", "leader"],
+  },
+  {
+    id: "derv1ws0",
+    name: "Mario Newton",
+    status: "active",
+    phoneNumber: "651273636",
+    address: "Bokwaongo Market",
+    role: ["member", "leader"],
+  },
+  {
+    id: "5kma53ae",
+    name: "Etta McDonald",
+    status: "inactive",
+    phoneNumber: "651273636",
+    address: "Bokwaongo Market",
+    role: ["member", "leader"],
+  },
+  {
+    id: "bhqecj4p",
+    name: "Corey Fisher",
+    status: "active",
+    phoneNumber: "651273636",
+    address: "Bokwaongo Market",
+    role: ["member", "leader"],
   },
 ];

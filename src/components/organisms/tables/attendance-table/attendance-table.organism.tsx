@@ -1,5 +1,4 @@
 "use client";
-
 import * as React from "react";
 import {
   ColumnDef,
@@ -13,21 +12,10 @@ import {
   useReactTable,
   VisibilityState,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ListFilter, Trash2, UserRoundPen } from "lucide-react";
+import { ArrowUpDown, Trash2, UserRoundPen } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuPortal,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -36,53 +24,29 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { MembersType } from "@/types/members.type";
 
-const data: MembersType[] = [
+const data: AttendanceType[] = [
   {
-    id: "m5gr84i9",
-    name: "Jerome Bradley",
-    status: "active",
-    phoneNumber: "651273636",
-    address: "Bokwaongo Market",
-    role: ["member", "leader"],
+    id: "bdb9ec6f-bdce-52ab-8adc-50cddd6749b6",
+    date: "8/29/2045",
+    present: 31,
+    total: 50,
   },
   {
-    id: "3u1reuv4",
-    name: "Nancy Turner",
-    status: "inactive",
-    phoneNumber: "651273636",
-    address: "Bokwaongo Market",
-    role: ["member", "leader"],
+    id: "bdb9ec6f-bdce-52ab-8adc-50cddd6749b6",
+    date: "8/29/2045",
+    present: 10,
+    total: 50,
   },
   {
-    id: "derv1ws0",
-    name: "Mario Newton",
-    status: "active",
-    phoneNumber: "651273636",
-    address: "Bokwaongo Market",
-    role: ["member", "leader"],
-  },
-  {
-    id: "5kma53ae",
-    name: "Etta McDonald",
-    status: "inactive",
-    phoneNumber: "651273636",
-    address: "Bokwaongo Market",
-    role: ["member", "leader"],
-  },
-  {
-    id: "bhqecj4p",
-    name: "Corey Fisher",
-    status: "active",
-    phoneNumber: "651273636",
-    address: "Bokwaongo Market",
-    role: ["member", "leader"],
+    id: "bdb9ec6f-bdce-52ab-8adc-50cddd6749b6",
+    date: "8/29/2045",
+    present: 5,
+    total: 50,
   },
 ];
 
-
-export const columns: ColumnDef<MembersType>[] = [
+export const columns: ColumnDef<AttendanceType>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -106,59 +70,35 @@ export const columns: ColumnDef<MembersType>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "name",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          className="!px-0"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Name
-          <ArrowUpDown />
-        </Button>
-      );
-    },
-    cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
-  },
-  {
-    accessorKey: "phoneNumber",
-    header: "Phone Number",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("phoneNumber")}</div>
-    ),
-  },
-  {
-    accessorKey: "address",
-    header: "Address",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("address")}</div>
-    ),
-  },
-  {
-    accessorKey: "status",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          className="!px-0"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Status
-          <ArrowUpDown />
-        </Button>
-      );
-    },
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("status")}</div>
-    ),
-  },
-  {
-    accessorKey: "role",
-    header: () => <div className="text-left">Role</div>,
+    accessorKey: "date",
+    header: "Date",
     cell: ({ row }) => {
-      const roles = row.getValue("role") as string[];
-      return <div className="font-medium">{roles[0]}</div>;
+      return <div className="font-medium">{row.getValue("date")}</div>;
+    },
+  },
+  {
+    accessorKey: "present",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          className="!px-0"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Present
+          <ArrowUpDown />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue("present")}</div>
+    ),
+  },
+  {
+    accessorKey: "total",
+    header: "Total",
+    cell: ({ row }) => {
+      return <div className="font-medium">{row.getValue("total")}</div>;
     },
   },
   {
@@ -181,7 +121,7 @@ export const columns: ColumnDef<MembersType>[] = [
   },
 ];
 
-export function MembersTable() {
+const AttendanceTable = () => {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -208,56 +148,8 @@ export function MembersTable() {
       rowSelection,
     },
   });
-
   return (
     <div className="w-full">
-      <div className="flex items-center gap-4 py-4">
-        <Input
-          placeholder="Search name ..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm font-sans"
-        />
-        <DropdownMenu>
-          <DropdownMenuTrigger className="flex gap-2 font-sans" asChild>
-            <Button variant={"outline"}>
-              <ListFilter />
-              Filters
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuSub>
-              <DropdownMenuSubTrigger>Status</DropdownMenuSubTrigger>
-              <DropdownMenuPortal>
-                <DropdownMenuSubContent>
-                  <DropdownMenuItem>Active</DropdownMenuItem>
-                  <DropdownMenuItem>Inactive</DropdownMenuItem>
-                </DropdownMenuSubContent>
-              </DropdownMenuPortal>
-            </DropdownMenuSub>
-            <DropdownMenuSub>
-              <DropdownMenuSubTrigger>Gender</DropdownMenuSubTrigger>
-              <DropdownMenuPortal>
-                <DropdownMenuSubContent>
-                  <DropdownMenuItem>Male</DropdownMenuItem>
-                  <DropdownMenuItem>Female</DropdownMenuItem>
-                </DropdownMenuSubContent>
-              </DropdownMenuPortal>
-            </DropdownMenuSub>
-            <DropdownMenuSub>
-              <DropdownMenuSubTrigger>Role</DropdownMenuSubTrigger>
-              <DropdownMenuPortal>
-                <DropdownMenuSubContent>
-                  <DropdownMenuItem>Leader</DropdownMenuItem>
-                  <DropdownMenuItem>Member</DropdownMenuItem>
-                </DropdownMenuSubContent>
-              </DropdownMenuPortal>
-            </DropdownMenuSub>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -334,4 +226,13 @@ export function MembersTable() {
       </div>
     </div>
   );
-}
+};
+
+export default AttendanceTable;
+
+export type AttendanceType = {
+  id: string;
+  date: string;
+  present: number | string;
+  total: number | string;
+};
