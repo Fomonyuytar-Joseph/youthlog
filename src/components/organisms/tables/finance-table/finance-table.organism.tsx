@@ -1,5 +1,4 @@
 "use client";
-"use client";
 
 import * as React from "react";
 import {
@@ -170,12 +169,11 @@ export const columns: ColumnDef<FinanceType>[] = [
 
       return (
         <div className="flex items-center gap-4">
-          <Button className="bg-[#fdede4] hover:bg-[#fdede4] cursor-pointer">
-            <Trash2 color="#b91c1c" />
-          </Button>
-
           <Button className="bg-green-100 hover:bg-green-100 cursor-pointer">
             <UserRoundPen color="#15803d" />
+          </Button>
+          <Button className="bg-[#fdede4] hover:bg-[#fdede4] cursor-pointer">
+            <Trash2 color="#b91c1c" />
           </Button>
         </div>
       );
@@ -184,32 +182,32 @@ export const columns: ColumnDef<FinanceType>[] = [
 ];
 
 const FinanceTable = () => {
-    const [sorting, setSorting] = React.useState<SortingState>([]);
-      const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-        []
-      );
-      const [columnVisibility, setColumnVisibility] =
-        React.useState<VisibilityState>({});
-      const [rowSelection, setRowSelection] = React.useState({});
-    
-      const table = useReactTable({
-        data,
-        columns,
-        onSortingChange: setSorting,
-        onColumnFiltersChange: setColumnFilters,
-        getCoreRowModel: getCoreRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
-        getSortedRowModel: getSortedRowModel(),
-        getFilteredRowModel: getFilteredRowModel(),
-        onColumnVisibilityChange: setColumnVisibility,
-        onRowSelectionChange: setRowSelection,
-        state: {
-          sorting,
-          columnFilters,
-          columnVisibility,
-          rowSelection,
-        },
-      });
+  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    []
+  );
+  const [columnVisibility, setColumnVisibility] =
+    React.useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = React.useState({});
+
+  const table = useReactTable({
+    data,
+    columns,
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    onColumnVisibilityChange: setColumnVisibility,
+    onRowSelectionChange: setRowSelection,
+    state: {
+      sorting,
+      columnFilters,
+      columnVisibility,
+      rowSelection,
+    },
+  });
   return (
     <div className="w-full">
       <div className="flex items-center gap-4 py-4">

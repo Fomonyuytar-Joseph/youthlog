@@ -1,10 +1,8 @@
-import ProgramPage from '@/components/organisms/program/program-page.organism'
-import React from 'react'
+import ProgramPage from "@/components/organisms/program/program-page.organism";
+import React from "react";
 
 const ProgramTemplate = () => {
-  return (
-       <ProgramPage/>
-  )
-}
+  return <ProgramPage />;
+};
 
-export default ProgramTemplate
+export default ProgramTemplate;

@@ -1,9 +1,9 @@
 "use client";
 import AddButton from "@/components/atoms/add-button/add-button.atom";
 import React, { useState } from "react";
-import { MembersTable } from "../tables/members-table/members-table.organism";
 import EntityCard from "@/components/molecules/finance-card/entity-card.molecule";
 import AddProgramModal from "../modals/add-program-modal/add-program-modal.organism";
+import ProgramTable from "../tables/program-table/program-table.organism";
 
 const ProgramPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -16,7 +16,7 @@ const ProgramPage = () => {
         <EntityCard value={20} title="Total Programs" color="green" />
         <EntityCard value={5} title="Completed Programs" color="blue" />
       </div>
-      <MembersTable />
+      <ProgramTable />
       {isModalOpen && (
         <AddProgramModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
       )}

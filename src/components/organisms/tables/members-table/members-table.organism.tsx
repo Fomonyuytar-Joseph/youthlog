@@ -177,12 +177,11 @@ console.log("Row data:", row.original);
 
       return (
         <div className="flex items-center gap-4">
-          <Button className="bg-[#fdede4] hover:bg-[#fdede4] cursor-pointer">
-            <Trash2 color="#b91c1c" />
-          </Button>
-
           <Button className="bg-green-100 hover:bg-green-100 cursor-pointer">
             <UserRoundPen color="#15803d" />
+          </Button>
+          <Button className="bg-[#fdede4] hover:bg-[#fdede4] cursor-pointer">
+            <Trash2 color="#b91c1c" />
           </Button>
         </div>
       );

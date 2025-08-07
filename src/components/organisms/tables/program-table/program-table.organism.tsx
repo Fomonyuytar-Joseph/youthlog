@@ -1,9 +1,326 @@
-import React from 'react'
+"use client";
+import * as React from "react";
+import {
+  ColumnDef,
+  ColumnFiltersState,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  SortingState,
+  useReactTable,
+  VisibilityState,
+} from "@tanstack/react-table";
+import { ArrowUpDown, ListFilter, Trash2, UserRoundPen } from "lucide-react";
 
-const programTable = () => {
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuPortal,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
+const data: ProgramType[] = [
+  {
+    id: "bdb9ec6f-bdce-52ab-8adc-50cddd6749b6",
+    name: "Prayer Conference",
+    date: "8/29/2045",
+    attendanceCount: "31",
+    status: "upcoming",
+  },
+  {
+    id: "7442c113-e54e-59f3-af24-a73f61a07fe0",
+    name: "Bible Study",
+    date: "8/16/2057",
+    attendanceCount: "55",
+    status: "completed",
+  },
+  {
+    id: "c0e3078b-4df0-572b-afc2-9e62da4f053d",
+    name: "Picnic",
+    date: "5/12/2053",
+    attendanceCount: "56",
+    status: "cancelled",
+  },
+];
+
+export const columns: ColumnDef<ProgramType>[] = [
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
+    accessorKey: "name",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          className="!px-0"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Name
+          <ArrowUpDown />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
+  },
+  {
+    accessorKey: "date",
+    header: "Date",
+    cell: ({ row }) => {
+      return <div className="font-medium">{row.getValue("date")}</div>;
+    },
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          className="!px-0"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          status
+          <ArrowUpDown />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const status = row.getValue("status");
+      return (
+        <div
+          className={`capitalize w-fit text-xs rounded-full px-2 py-1 ${
+            status === "completed"
+              ? "text-green-800 bg-green-100"
+              : status === "upcoming"
+              ? "text-blue-800 bg-blue-100"
+              : "text-red-800 bg-red-100"
+          }`}
+        >
+          {row.getValue("status")}
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "attendanceCount",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          className="!px-0"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Attendance Number
+          <ArrowUpDown />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue("attendanceCount")}</div>
+    ),
+  },
+  {
+    id: "actions",
+    enableHiding: false,
+    cell: ({ row }) => {
+      console.log("Row data:", row.original);
+
+      return (
+        <div className="flex items-center gap-4">
+          <Button className="bg-green-100 hover:bg-green-100 cursor-pointer">
+            <UserRoundPen color="#15803d" />
+          </Button>
+          <Button className="bg-[#fdede4] hover:bg-[#fdede4] cursor-pointer">
+            <Trash2 color="#b91c1c" />
+          </Button>
+        </div>
+      );
+    },
+  },
+];
+
+const ProgramTable = () => {
+  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    []
+  );
+  const [columnVisibility, setColumnVisibility] =
+    React.useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = React.useState({});
+
+  const table = useReactTable({
+    data,
+    columns,
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    onColumnVisibilityChange: setColumnVisibility,
+    onRowSelectionChange: setRowSelection,
+    state: {
+      sorting,
+      columnFilters,
+      columnVisibility,
+      rowSelection,
+    },
+  });
+
   return (
-    <div>programTable</div>
-  )
-}
+    <div className="w-full">
+      <div className="flex items-center gap-4 py-4">
+        <Input
+          placeholder="Search finance name ..."
+          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+          onChange={(event) =>
+            table.getColumn("name")?.setFilterValue(event.target.value)
+          }
+          className="max-w-sm font-sans"
+        />
+        <DropdownMenu>
+          <DropdownMenuTrigger className="flex gap-2 font-sans" asChild>
+            <Button variant={"outline"}>
+              <ListFilter />
+              Filters
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger>type</DropdownMenuSubTrigger>
+              <DropdownMenuPortal>
+                <DropdownMenuSubContent>
+                  <DropdownMenuItem>Income</DropdownMenuItem>
+                  <DropdownMenuItem>Expense</DropdownMenuItem>
+                </DropdownMenuSubContent>
+              </DropdownMenuPortal>
+            </DropdownMenuSub>
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger>Amount</DropdownMenuSubTrigger>
+            </DropdownMenuSub>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+      <div className="rounded-md border">
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead key={header.id}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </TableHead>
+                  );
+                })}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+      <div className="flex items-center justify-end space-x-2 py-4">
+        <div className="text-muted-foreground flex-1 text-sm">
+          {table.getFilteredSelectedRowModel().rows.length} of{" "}
+          {table.getFilteredRowModel().rows.length} row(s) selected.
+        </div>
+        <div className="space-x-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            Previous
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            Next
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
-export default programTable
+export default ProgramTable;
+
+export type ProgramType = {
+  id: string;
+  name: string;
+  date: string;
+  attendanceCount: string;
+  status: "upcoming" | "completed" | "cancelled";
+};
