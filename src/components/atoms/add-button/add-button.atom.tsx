@@ -14,7 +14,7 @@ const AddButton: React.FC<AddButtonProps> = ({ onClick, text }) => {
       onClick={onClick}
     >
       <CirclePlus className={"!w-5 !h-5"}/>
-      {`Add ${text}`}
+      {`${text}`}
     </Button>
   );
 };

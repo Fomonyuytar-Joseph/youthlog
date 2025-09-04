@@ -9,7 +9,7 @@ const MembersPage = () => {
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
-        <AddButton text="members" onClick={() => setIsAddModalOpen(true)} />
+        <AddButton text="Add Members" onClick={() => setIsAddModalOpen(true)} />
         <h3 className="text-base font-semibold text-slate-500">
           Total Youths: 100
         </h3>

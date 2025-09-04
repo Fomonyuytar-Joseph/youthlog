@@ -31,18 +31,21 @@ const data: AttendanceType[] = [
     date: "8/29/2045",
     present: 31,
     total: 50,
+    absent: 19,
   },
   {
     id: "bdb9ec6f-bdce-52ab-8adc-50cddd6749b6",
     date: "8/29/2045",
     present: 10,
     total: 50,
+    absent:4,
   },
   {
     id: "bdb9ec6f-bdce-52ab-8adc-50cddd6749b6",
     date: "8/29/2045",
     present: 5,
     total: 50,
+    absent:10,
   },
 ];
 
@@ -95,10 +98,10 @@ export const columns: ColumnDef<AttendanceType>[] = [
     ),
   },
   {
-    accessorKey: "total",
-    header: "Total",
+    accessorKey: "absent",
+    header: "Absent",
     cell: ({ row }) => {
-      return <div className="font-medium">{row.getValue("total")}</div>;
+      return <div className="font-medium">{row.getValue("absent")}</div>;
     },
   },
   {
@@ -235,4 +238,5 @@ export type AttendanceType = {
   date: string;
   present: number | string;
   total: number | string;
+  absent?: number | string;
 };
