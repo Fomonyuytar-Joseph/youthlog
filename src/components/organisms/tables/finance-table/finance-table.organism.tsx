@@ -36,37 +36,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { FinanceType } from "@/types/finance.type";
+import { financeDummyData } from "@/constants/data";
 
-const data: FinanceType[] = [
-  {
-    id: "1e62256a-36ec-5b13-b367-721e4632e9b5",
-    name: "Food for Association",
-    amount: "12,000 XAF",
-    date: "6 Aug 2025",
-    type: "expense",
-  },
-  {
-    id: "8fdfd659-3cf8-5ed1-973c-0da70de78fd1",
-    name: "Zachary Schneider",
-    amount: "496",
-    date: " 2023-10-01",
-    type: "income",
-  },
-  {
-    id: "841a3a85-d172-59df-abbc-995679902ed9",
-    name: "Micheal Osborne",
-    amount: "710",
-    date: " 2023-10-01",
-    type: "expense",
-  },
-  {
-    id: "d2a1bf68-613e-548a-b7f7-f11ea84b4fbb",
-    name: "Ernest Warner",
-    amount: "609",
-    date: " 2023-10-01",
-    type: "income",
-  },
-];
+
 
 export const columns: ColumnDef<FinanceType>[] = [
   {
@@ -191,7 +164,7 @@ const FinanceTable = () => {
   const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
-    data,
+    data: financeDummyData,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -322,10 +295,4 @@ const FinanceTable = () => {
 
 export default FinanceTable;
 
-export type FinanceType = {
-  id: string;
-  name: string;
-  amount: string | number;
-  date: string;
-  type: "income" | "expense";
-};
+

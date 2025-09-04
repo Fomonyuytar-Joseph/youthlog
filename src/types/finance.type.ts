@@ -5,3 +5,12 @@ export interface RecentTransactionsType{
     date:string;
     type:string;
 }
+
+
+export type FinanceType = {
+  id: string;
+  name: string;
+  amount: string | number;
+  date: string;
+  type: "income" | "expense";
+};

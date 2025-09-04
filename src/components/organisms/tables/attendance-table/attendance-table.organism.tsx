@@ -24,30 +24,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { AttendanceType } from "@/types/attendance.type";
+import { attendanceDummyData } from "@/constants/data";
 
-const data: AttendanceType[] = [
-  {
-    id: "bdb9ec6f-bdce-52ab-8adc-50cddd6749b6",
-    date: "8/29/2045",
-    present: 31,
-    total: 50,
-    absent: 19,
-  },
-  {
-    id: "bdb9ec6f-bdce-52ab-8adc-50cddd6749b6",
-    date: "8/29/2045",
-    present: 10,
-    total: 50,
-    absent:4,
-  },
-  {
-    id: "bdb9ec6f-bdce-52ab-8adc-50cddd6749b6",
-    date: "8/29/2045",
-    present: 5,
-    total: 50,
-    absent:10,
-  },
-];
+
 
 export const columns: ColumnDef<AttendanceType>[] = [
   {
@@ -134,7 +114,7 @@ const AttendanceTable = () => {
   const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
-    data,
+    attendanceDummyData,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -233,10 +213,4 @@ const AttendanceTable = () => {
 
 export default AttendanceTable;
 
-export type AttendanceType = {
-  id: string;
-  date: string;
-  present: number | string;
-  total: number | string;
-  absent?: number | string;
-};
+

@@ -6,6 +6,7 @@ interface TopStatsProps {
     title: string;
     icon: React.ReactNode;
     value: number | string;
+    link:string
   }[];
 }
 
@@ -25,6 +26,7 @@ const TopStats: React.FC<TopStatsProps> = (data) => {
           icon={stat.icon}
           value={stat.value}
           iconClassName={iconColor[stat.title as keyof typeof iconColor]}
+          link={stat.link}
         />
       ))}
     </div>

@@ -11,12 +11,13 @@ import {
 interface ModalContainerProps {
   isOpen: boolean;
   setIsOpen?: React.Dispatch<React.SetStateAction<boolean>>;
-  title: string;
+  title?: string;
   description?: string;
   primaryButtonText?: string;
   secondaryButtonText?: string;
   onPrimaryButtonClick?: () => void;
   children?: React.ReactNode;
+  hideDefaultButtons?: boolean;
 }
 
 export const ModalContainer: React.FC<ModalContainerProps> = ({
@@ -28,6 +29,7 @@ export const ModalContainer: React.FC<ModalContainerProps> = ({
   secondaryButtonText = "Cancel",
   onPrimaryButtonClick,
   children,
+  hideDefaultButtons = false,
 }) => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -41,7 +43,7 @@ export const ModalContainer: React.FC<ModalContainerProps> = ({
             <DialogDescription>{description}</DialogDescription>
           </DialogHeader>
           {children}
-          <DialogFooter>
+          {!hideDefaultButtons &&<DialogFooter>
             <Button
               variant="outline"
               onClick={() => setIsOpen && setIsOpen(false)}
@@ -51,7 +53,7 @@ export const ModalContainer: React.FC<ModalContainerProps> = ({
             <Button type="submit" onClick={onPrimaryButtonClick}>
               {primaryButtonText}
             </Button>
-          </DialogFooter>
+          </DialogFooter>}
         </DialogContent>
       </form>
     </Dialog>

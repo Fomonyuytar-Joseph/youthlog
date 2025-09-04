@@ -14,21 +14,25 @@ const OverviewTemplate = () => {
       title: "Active Members",
       icon: <Users className="text-green-400" />,
       value: 30,
+      link:"/members"
     },
     {
       title: "Income",
       icon: <CircleDollarSign className="text-violet-400" />,
       value: "5,000 CFA",
+      link:"/finance"
     },
     {
       title: "Balance",
       icon: <TrendingUp className="text-blue-400" />,
       value: "700 CFA",
+      link:"/finance"
     },
     {
       title: "Attendance %",
       icon: <CircleDollarSign className="text-orange-400" />,
       value: "67%",
+      link:"/attendance"
     },
   ];
   return (

@@ -37,50 +37,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { MembersType } from "@/types/members.type";
-
-const data: MembersType[] = [
-  {
-    id: "m5gr84i9",
-    name: "Jerome Bradley",
-    status: "active",
-    phoneNumber: "651273636",
-    address: "Bokwaongo Market",
-    role: ["member", "leader"],
-  },
-  {
-    id: "3u1reuv4",
-    name: "Nancy Turner",
-    status: "inactive",
-    phoneNumber: "651273636",
-    address: "Bokwaongo Market",
-    role: ["member", "leader"],
-  },
-  {
-    id: "derv1ws0",
-    name: "Mario Newton",
-    status: "active",
-    phoneNumber: "651273636",
-    address: "Bokwaongo Market",
-    role: ["member", "leader"],
-  },
-  {
-    id: "5kma53ae",
-    name: "Etta McDonald",
-    status: "inactive",
-    phoneNumber: "651273636",
-    address: "Bokwaongo Market",
-    role: ["member", "leader"],
-  },
-  {
-    id: "bhqecj4p",
-    name: "Corey Fisher",
-    status: "active",
-    phoneNumber: "651273636",
-    address: "Bokwaongo Market",
-    role: ["member", "leader"],
-  },
-];
-
+import { membersDummyData } from "@/constants/data";
 
 export const columns: ColumnDef<MembersType>[] = [
   {
@@ -190,8 +147,8 @@ export function MembersTable() {
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
 
-  const table = useReactTable({
-    data,
+  const table = useReactTable<MembersType>({
+    data: membersDummyData,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,

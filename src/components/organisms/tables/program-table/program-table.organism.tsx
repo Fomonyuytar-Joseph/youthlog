@@ -35,30 +35,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { programsDummyData } from "@/constants/data";
 
-const data: ProgramType[] = [
-  {
-    id: "bdb9ec6f-bdce-52ab-8adc-50cddd6749b6",
-    name: "Prayer Conference",
-    date: "8/29/2045",
-    attendanceCount: "31",
-    status: "upcoming",
-  },
-  {
-    id: "7442c113-e54e-59f3-af24-a73f61a07fe0",
-    name: "Bible Study",
-    date: "8/16/2057",
-    attendanceCount: "55",
-    status: "completed",
-  },
-  {
-    id: "c0e3078b-4df0-572b-afc2-9e62da4f053d",
-    name: "Picnic",
-    date: "5/12/2053",
-    attendanceCount: "56",
-    status: "cancelled",
-  },
-];
+
 
 export const columns: ColumnDef<ProgramType>[] = [
   {
@@ -185,7 +164,7 @@ const ProgramTable = () => {
   const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
-    data,
+    data: programsDummyData,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
