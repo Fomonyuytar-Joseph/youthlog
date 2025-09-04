@@ -12,7 +12,7 @@ import {
   useReactTable,
   VisibilityState,
 } from "@tanstack/react-table";
-import { ArrowUpDown, Trash2, UserRoundPen } from "lucide-react";
+import { ArrowUpDown, SquarePen, Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -113,7 +113,7 @@ export const columns: ColumnDef<AttendanceType>[] = [
       return (
         <div className="flex items-center gap-4">
           <Button className="bg-green-100 hover:bg-green-100 cursor-pointer">
-            <UserRoundPen color="#15803d" />
+            <SquarePen color="#15803d" />
           </Button>
           <Button className="bg-[#fdede4] hover:bg-[#fdede4] cursor-pointer">
             <Trash2 color="#b91c1c" />
