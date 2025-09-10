@@ -114,7 +114,7 @@ const AttendanceTable = () => {
   const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
-    attendanceDummyData,
+    data:attendanceDummyData,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
