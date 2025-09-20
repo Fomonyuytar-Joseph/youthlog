@@ -13,7 +13,6 @@ import {
   VisibilityState,
 } from "@tanstack/react-table";
 import { ArrowUpDown, ListFilter, Trash2, UserRoundPen } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -35,126 +34,132 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { programsDummyData } from "@/constants/data";
 
+interface ProgramTableProps {
+  data: ProgramType[];
+  handleDelete: (program: ProgramType) => void;
+}
 
-
-export const columns: ColumnDef<ProgramType>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "name",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          className="!px-0"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Name
-          <ArrowUpDown />
-        </Button>
-      );
+const ProgramTable: React.FC<ProgramTableProps> = ({ data, handleDelete }) => {
+  const columns: ColumnDef<ProgramType>[] = [
+    {
+      id: "select",
+      header: ({ table }) => (
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+          }
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
     },
-    cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
-  },
-  {
-    accessorKey: "date",
-    header: "Date",
-    cell: ({ row }) => {
-      return <div className="font-medium">{row.getValue("date")}</div>;
-    },
-  },
-  {
-    accessorKey: "status",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          className="!px-0"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          status
-          <ArrowUpDown />
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      const status = row.getValue("status");
-      return (
-        <div
-          className={`capitalize w-fit text-xs rounded-full px-2 py-1 ${
-            status === "completed"
-              ? "text-green-800 bg-green-100"
-              : status === "upcoming"
-              ? "text-blue-800 bg-blue-100"
-              : "text-red-800 bg-red-100"
-          }`}
-        >
-          {row.getValue("status")}
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: "attendanceCount",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          className="!px-0"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Attendance Number
-          <ArrowUpDown />
-        </Button>
-      );
-    },
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("attendanceCount")}</div>
-    ),
-  },
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      console.log("Row data:", row.original);
-
-      return (
-        <div className="flex items-center gap-4">
-          <Button className="bg-green-100 hover:bg-green-100 cursor-pointer">
-            <UserRoundPen color="#15803d" />
+    {
+      accessorKey: "name",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            className="!px-0"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Name
+            <ArrowUpDown />
           </Button>
-          <Button className="bg-[#fdede4] hover:bg-[#fdede4] cursor-pointer">
-            <Trash2 color="#b91c1c" />
-          </Button>
-        </div>
-      );
+        );
+      },
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("name")}</div>
+      ),
     },
-  },
-];
+    {
+      accessorKey: "date",
+      header: "Date",
+      cell: ({ row }) => {
+        return <div className="font-medium">{row.getValue("date")}</div>;
+      },
+    },
+    {
+      accessorKey: "status",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            className="!px-0"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            status
+            <ArrowUpDown />
+          </Button>
+        );
+      },
+      cell: ({ row }) => {
+        const status = row.getValue("status");
+        return (
+          <div
+            className={`capitalize w-fit text-xs rounded-full px-2 py-1 ${
+              status === "completed"
+                ? "text-green-800 bg-green-100"
+                : status === "upcoming"
+                ? "text-blue-800 bg-blue-100"
+                : "text-red-800 bg-red-100"
+            }`}
+          >
+            {row.getValue("status")}
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: "attendanceCount",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            className="!px-0"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Attendance Number
+            <ArrowUpDown />
+          </Button>
+        );
+      },
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("attendanceCount")}</div>
+      ),
+    },
+    {
+      id: "actions",
+      enableHiding: false,
+      cell: ({ row }) => {
+        // console.log("Row data:", row.original);
 
-const ProgramTable = () => {
+        return (
+          <div className="flex items-center gap-4">
+            <Button className="bg-green-100 hover:bg-green-100 cursor-pointer">
+              <UserRoundPen color="#15803d" />
+            </Button>
+            <Button
+              className="bg-[#fdede4] hover:bg-[#fdede4] cursor-pointer"
+              onClick={() => handleDelete(row.original)}
+            >
+              <Trash2 color="#b91c1c" />
+            </Button>
+          </div>
+        );
+      },
+    },
+  ];
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -164,7 +169,7 @@ const ProgramTable = () => {
   const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
-    data: programsDummyData,
+    data,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,

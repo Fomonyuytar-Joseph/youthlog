@@ -3,10 +3,25 @@ import AddButton from "@/components/atoms/add-button/add-button.atom";
 import React, { useState } from "react";
 import EntityCard from "@/components/molecules/finance-card/entity-card.molecule";
 import AddProgramModal from "../modals/add-program-modal/add-program-modal.organism";
-import ProgramTable from "../tables/program-table/program-table.organism";
+import ProgramTable, {
+  ProgramType,
+} from "../tables/program-table/program-table.organism";
+import DeleteModal from "../modals/delete-modal/delete-modal.organism";
+import { programsDummyData } from "@/constants/data";
 
 const ProgramPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteModal, setIsDeleteModal] = useState(false);
+  const [selectedProgram, setSelectedProgram] = useState<ProgramType | null>(
+    {} as ProgramType
+  );
+
+  const handleDelete = (program: ProgramType) => {
+    setSelectedProgram(program);
+    console.table(program);
+    console.table(selectedProgram);
+    setIsDeleteModal(true);
+  };
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
@@ -16,9 +31,13 @@ const ProgramPage = () => {
         <EntityCard value={20} title="Total Programs" color="green" />
         <EntityCard value={5} title="Completed Programs" color="blue" />
       </div>
-      <ProgramTable />
+      <ProgramTable data={programsDummyData} handleDelete={handleDelete} />
       {isModalOpen && (
         <AddProgramModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
+      )}
+
+      {isDeleteModal && (
+        <DeleteModal isOpen={isDeleteModal} setIsOpen={setIsDeleteModal} />
       )}
     </div>
   );

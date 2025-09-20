@@ -37,124 +37,134 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { FinanceType } from "@/types/finance.type";
-import { financeDummyData } from "@/constants/data";
+
+interface FinanceTableProps {
+  data: FinanceType[];
+  handleDelete: (finance: FinanceType) => void;
+}
 
 
 
-export const columns: ColumnDef<FinanceType>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "name",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          className="!px-0"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Name
-          <ArrowUpDown />
-        </Button>
-      );
-    },
-    cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
-  },
-  {
-    accessorKey: "amount",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          className="!px-0"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Amount
-          <ArrowUpDown />
-        </Button>
-      );
-    },
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("amount")}</div>
-    ),
-  },
-  {
-    accessorKey: "type",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          className="!px-0"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Type
-          <ArrowUpDown />
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      const type = row.getValue("type");
-      return (
-        <div
-          className={`capitalize w-fit text-xs rounded-full px-2 py-1 ${
-            type === "income"
-              ? "text-green-500 bg-green-200"
-              : "text-red-500 bg-red-200"
-          }`}
-        >
-          {row.getValue("type")}
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: "date",
-    header: "Date",
-    cell: ({ row }) => {
-      return <div className="font-medium">{row.getValue("date")}</div>;
-    },
-  },
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      console.log("Row data:", row.original);
 
-      return (
-        <div className="flex items-center gap-4">
-          <Button className="bg-green-100 hover:bg-green-100 cursor-pointer">
-            <SquarePen color="#15803d" />
+const FinanceTable: React.FC<FinanceTableProps> = ({ data ,handleDelete }) => {
+
+const columns: ColumnDef<FinanceType>[] = [
+    {
+      id: "select",
+      header: ({ table }) => (
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+          }
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
+    {
+      accessorKey: "name",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            className="!px-0"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Name
+            <ArrowUpDown />
           </Button>
-          <Button className="bg-[#fdede4] hover:bg-[#fdede4] cursor-pointer">
-            <Trash2 color="#b91c1c" />
-          </Button>
-        </div>
-      );
+        );
+      },
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("name")}</div>
+      ),
     },
-  },
-];
+    {
+      accessorKey: "amount",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            className="!px-0"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Amount
+            <ArrowUpDown />
+          </Button>
+        );
+      },
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("amount")}</div>
+      ),
+    },
+    {
+      accessorKey: "type",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            className="!px-0"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Type
+            <ArrowUpDown />
+          </Button>
+        );
+      },
+      cell: ({ row }) => {
+        const type = row.getValue("type");
+        return (
+          <div
+            className={`capitalize w-fit text-xs rounded-full px-2 py-1 ${
+              type === "income"
+                ? "text-green-500 bg-green-200"
+                : "text-red-500 bg-red-200"
+            }`}
+          >
+            {row.getValue("type")}
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: "date",
+      header: "Date",
+      cell: ({ row }) => {
+        return <div className="font-medium">{row.getValue("date")}</div>;
+      },
+    },
+    {
+      id: "actions",
+      enableHiding: false,
+      cell: ({ row }) => {
+        // console.log("Row data:", row.original);
 
-const FinanceTable = () => {
+        return (
+          <div className="flex items-center gap-4">
+            <Button className="bg-green-100 hover:bg-green-100 cursor-pointer">
+              <SquarePen color="#15803d" />
+            </Button>
+            <Button
+              className="bg-[#fdede4] hover:bg-[#fdede4] cursor-pointer"
+              onClick={() => handleDelete(row.original)}
+            >
+              <Trash2 color="#b91c1c" />
+            </Button>
+          </div>
+        );
+      },
+    },
+  ];
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -164,7 +174,7 @@ const FinanceTable = () => {
   const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
-    data: financeDummyData,
+    data,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,

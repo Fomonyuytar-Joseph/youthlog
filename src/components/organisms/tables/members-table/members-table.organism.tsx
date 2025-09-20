@@ -44,8 +44,6 @@ interface MembersTableProps {
   data: MembersType[];
 }
 
-
-
 export function MembersTable({ data, handleDelete }: MembersTableProps) {
   const columns: ColumnDef<MembersType>[] = [
     {

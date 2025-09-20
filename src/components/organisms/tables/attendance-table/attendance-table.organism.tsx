@@ -25,86 +25,92 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { AttendanceType } from "@/types/attendance.type";
-import { attendanceDummyData } from "@/constants/data";
+
+interface AttendanceTableProps {
+  data: AttendanceType[];
+  handleDelete :(attendance:AttendanceType)=>void
+}
 
 
 
-export const columns: ColumnDef<AttendanceType>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "date",
-    header: "Date",
-    cell: ({ row }) => {
-      return <div className="font-medium">{row.getValue("date")}</div>;
-    },
-  },
-  {
-    accessorKey: "present",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          className="!px-0"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Present
-          <ArrowUpDown />
-        </Button>
-      );
-    },
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("present")}</div>
-    ),
-  },
-  {
-    accessorKey: "absent",
-    header: "Absent",
-    cell: ({ row }) => {
-      return <div className="font-medium">{row.getValue("absent")}</div>;
-    },
-  },
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      console.log("Row data:", row.original);
+const AttendanceTable:React.FC<AttendanceTableProps> = ({data,handleDelete}) => {
+ const columns: ColumnDef<AttendanceType>[] = [
+   {
+     id: "select",
+     header: ({ table }) => (
+       <Checkbox
+         checked={
+           table.getIsAllPageRowsSelected() ||
+           (table.getIsSomePageRowsSelected() && "indeterminate")
+         }
+         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+         aria-label="Select all"
+       />
+     ),
+     cell: ({ row }) => (
+       <Checkbox
+         checked={row.getIsSelected()}
+         onCheckedChange={(value) => row.toggleSelected(!!value)}
+         aria-label="Select row"
+       />
+     ),
+     enableSorting: false,
+     enableHiding: false,
+   },
+   {
+     accessorKey: "date",
+     header: "Date",
+     cell: ({ row }) => {
+       return <div className="font-medium">{row.getValue("date")}</div>;
+     },
+   },
+   {
+     accessorKey: "present",
+     header: ({ column }) => {
+       return (
+         <Button
+           variant="ghost"
+           className="!px-0"
+           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+         >
+           Present
+           <ArrowUpDown />
+         </Button>
+       );
+     },
+     cell: ({ row }) => (
+       <div className="capitalize">{row.getValue("present")}</div>
+     ),
+   },
+   {
+     accessorKey: "absent",
+     header: "Absent",
+     cell: ({ row }) => {
+       return <div className="font-medium">{row.getValue("absent")}</div>;
+     },
+   },
+   {
+     id: "actions",
+     enableHiding: false,
+     cell: ({ row }) => {
+      //  console.log("Row data:", row.original);
 
-      return (
-        <div className="flex items-center gap-4">
-          <Button className="bg-green-100 hover:bg-green-100 cursor-pointer">
-            <SquarePen color="#15803d" />
-          </Button>
-          <Button className="bg-[#fdede4] hover:bg-[#fdede4] cursor-pointer">
-            <Trash2 color="#b91c1c" />
-          </Button>
-        </div>
-      );
-    },
-  },
-];
-
-const AttendanceTable = () => {
+       return (
+         <div className="flex items-center gap-4">
+           <Button className="bg-green-100 hover:bg-green-100 cursor-pointer">
+             <SquarePen color="#15803d" />
+           </Button>
+           <Button
+             className="bg-[#fdede4] hover:bg-[#fdede4] cursor-pointer"
+             onClick={() => handleDelete(row.original)}
+           >
+             <Trash2 color="#b91c1c" />
+           </Button>
+         </div>
+       );
+     },
+   },
+ ];
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -114,7 +120,7 @@ const AttendanceTable = () => {
   const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
-    data:attendanceDummyData,
+    data,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
