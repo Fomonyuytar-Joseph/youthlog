@@ -29,6 +29,11 @@ const FinancePage = () => {
     console.table(selectedFinance);
     setIsDeleteModal(true);
   };
+
+  const handleSave = (finance: FinanceType) => {
+    console.table(finance);
+    setIsEditModal(false);
+  };
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
@@ -57,7 +62,7 @@ const FinancePage = () => {
         isOpen={isEditModal}
         setIsOpen={setIsEditModal}
         finance={selectedFinance}
-        onSave={handleEdit}
+        onSave={handleSave}
         recordedByOptions={["Joseph", "Mary", "Peter"]}
       />
     </div>

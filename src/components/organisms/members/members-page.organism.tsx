@@ -29,6 +29,11 @@ const MembersPage = () => {
     console.table(member);
   };
 
+  const handleSave = (member: MembersType) => {
+    console.table(member);
+    setIsEditModal(false);
+  };
+
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
@@ -53,7 +58,7 @@ const MembersPage = () => {
         isOpen={isEditModal}
         setIsOpen={setIsEditModal}
         member={selectedMember}
-        onSave={handleEdit}
+        onSave={handleSave}
         availableRoles={[
           "member",
           "president",

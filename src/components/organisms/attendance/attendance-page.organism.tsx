@@ -5,12 +5,14 @@ import AttendanceTable from "../tables/attendance-table/attendance-table.organis
 import EntityCard from "@/components/molecules/finance-card/entity-card.molecule";
 import TakeAttendanceModal from "../modals/add-modals/take-attendance-modal/take-attendance-modal.organism";
 import DeleteModal from "../modals/delete-modal/delete-modal.organism";
-import { attendanceDummyData } from "@/constants/data";
+import { attendanceDummyData, membersDummyData } from "@/constants/data";
 import { AttendanceType } from "@/types/attendance.type";
+import { EditAttendanceModal } from "../modals/edit-modals/edit-attendance-modal/edit-attendance-modal.organism";
 
 const AttendancePage = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
+  const [isEditModal, setIsEditModal] = useState(false);
   const [selectedAttendance, setSelectedAttendance] =
     useState<AttendanceType | null>({} as AttendanceType);
 
@@ -20,6 +22,18 @@ const AttendancePage = () => {
     console.table(selectedAttendance);
     setIsDeleteModal(true);
   };
+
+  const handleEdit = (attendance: AttendanceType) => {
+    setSelectedAttendance(attendance);
+    setIsEditModal(true);
+    console.table(attendance);
+  };
+
+  const handleSave = (updatedRecords: { id: string; present: boolean }[]) => {
+    console.log("Updated Attendance:", updatedRecords);
+    // setAttendanceRecords(updatedRecords); // Save to state or send to backend
+  };
+
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
@@ -32,7 +46,11 @@ const AttendancePage = () => {
         <EntityCard value={"25"} title="Highest Attendance" color="green" />
         <EntityCard value={"5"} title="Lowest Attendance" color="red" />
       </div>
-      <AttendanceTable data={attendanceDummyData} handleDelete={handleDelete} />
+      <AttendanceTable
+        data={attendanceDummyData}
+        handleDelete={handleDelete}
+        handleEdit={handleEdit}
+      />
       {isAddModalOpen && (
         <TakeAttendanceModal
           isOpen={isAddModalOpen}
@@ -43,6 +61,14 @@ const AttendancePage = () => {
       {isDeleteModal && (
         <DeleteModal isOpen={isDeleteModal} setIsOpen={setIsDeleteModal} />
       )}
+
+      <EditAttendanceModal
+        isOpen={isEditModal}
+        setIsOpen={setIsEditModal}
+        members={membersDummyData}
+        attendanceRecords={selectedAttendance?.attendanceRecords ?? []}
+        onSave={handleSave}
+      />
     </div>
   );
 };

@@ -112,20 +112,62 @@ export const attendanceDummyData: AttendanceType[] = [
     present: 31,
     total: 50,
     absent: 19,
+    attendanceRecords: [
+      {
+        id: "1",
+        present: true,
+      },
+      {
+        id: "2",
+        present: false,
+      },
+      {
+        id: "3",
+        present: true,
+      },
+    ],
   },
   {
     id: "bdb9ec6f-bdce-52ab-8adc-50cddd6749b6",
     date: "8/29/2045",
     present: 10,
     total: 50,
-    absent:4,
+    absent: 4,
+    attendanceRecords: [
+      {
+        id: "1",
+        present: true,
+      },
+      {
+        id: "2",
+        present: false,
+      },
+      {
+        id: "3",
+        present: true,
+      },
+    ],
   },
   {
     id: "bdb9ec6f-bdce-52ab-8adc-50cddd6749b6",
     date: "8/29/2045",
     present: 5,
     total: 50,
-    absent:10,
+    absent: 10,
+    attendanceRecords: [
+      {
+        id: "1",
+        present: true,
+      },
+      {
+        id: "2",
+        present: false,
+      },
+      {
+        id: "3",
+        present: true,
+      },
+    ],
   },
 ];
 

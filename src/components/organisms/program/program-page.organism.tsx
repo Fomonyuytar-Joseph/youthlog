@@ -30,6 +30,11 @@ const ProgramPage = () => {
     console.table(program);
   };
 
+  const handleSave = (program: ProgramType) => {
+    console.table(program);
+    setIsEditModal(false);
+  };
+
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
@@ -55,7 +60,7 @@ const ProgramPage = () => {
         isOpen={isEditModal}
         setIsOpen={setIsEditModal}
         program={selectedProgram}
-        onSave={handleEdit}
+        onSave={handleSave}
       />
     </div>
   );

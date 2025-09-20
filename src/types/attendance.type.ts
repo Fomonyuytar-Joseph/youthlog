@@ -9,4 +9,5 @@ export type AttendanceType = {
   present: number | string;
   total: number | string;
   absent?: number | string;
+  attendanceRecords?: { id: string; present: boolean }[];
 };

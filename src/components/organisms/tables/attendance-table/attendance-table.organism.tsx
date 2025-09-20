@@ -29,11 +29,12 @@ import { AttendanceType } from "@/types/attendance.type";
 interface AttendanceTableProps {
   data: AttendanceType[];
   handleDelete :(attendance:AttendanceType)=>void
+  handleEdit :(attendance:AttendanceType)=>void
 }
 
 
 
-const AttendanceTable:React.FC<AttendanceTableProps> = ({data,handleDelete}) => {
+const AttendanceTable:React.FC<AttendanceTableProps> = ({data,handleDelete,handleEdit}) => {
  const columns: ColumnDef<AttendanceType>[] = [
    {
      id: "select",
@@ -97,7 +98,7 @@ const AttendanceTable:React.FC<AttendanceTableProps> = ({data,handleDelete}) => 
 
        return (
          <div className="flex items-center gap-4">
-           <Button className="bg-green-100 hover:bg-green-100 cursor-pointer">
+           <Button className="bg-green-100 hover:bg-green-100 cursor-pointer" onClick={() => handleEdit(row.original)}>
              <SquarePen color="#15803d" />
            </Button>
            <Button
