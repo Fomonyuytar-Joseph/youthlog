@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import NextTopLoader from "nextjs-toploader";
-import DashboardLayout from "@/components/organisms/dashboard-layout/dashboard-layout.organism";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,12 +26,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased font-[family-name:var(--font-geist-sans)]`}
       >
         <NextTopLoader color="oklch(0.723 0.219 149.579)" />
-        <DashboardLayout>
-          {children}
-        </DashboardLayout>
+        {children}
       </body>
     </html>
   );
