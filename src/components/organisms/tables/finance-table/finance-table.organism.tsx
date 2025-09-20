@@ -37,18 +37,20 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { FinanceType } from "@/types/finance.type";
+import { formatDate } from "@/lib/utils/formatDate";
 
 interface FinanceTableProps {
   data: FinanceType[];
   handleDelete: (finance: FinanceType) => void;
+  handleEdit: (finance: FinanceType) => void;
 }
 
-
-
-
-const FinanceTable: React.FC<FinanceTableProps> = ({ data ,handleDelete }) => {
-
-const columns: ColumnDef<FinanceType>[] = [
+const FinanceTable: React.FC<FinanceTableProps> = ({
+  data,
+  handleDelete,
+  handleEdit,
+}) => {
+  const columns: ColumnDef<FinanceType>[] = [
     {
       id: "select",
       header: ({ table }) => (
@@ -104,7 +106,7 @@ const columns: ColumnDef<FinanceType>[] = [
         );
       },
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("amount")}</div>
+        <div className="capitalize">{row.getValue("amount") + " XAF"}</div>
       ),
     },
     {
@@ -140,7 +142,8 @@ const columns: ColumnDef<FinanceType>[] = [
       accessorKey: "date",
       header: "Date",
       cell: ({ row }) => {
-        return <div className="font-medium">{row.getValue("date")}</div>;
+        const formattedDate = formatDate(row.getValue("date"));
+        return <div className="font-medium">{formattedDate}</div>;
       },
     },
     {
@@ -151,7 +154,10 @@ const columns: ColumnDef<FinanceType>[] = [
 
         return (
           <div className="flex items-center gap-4">
-            <Button className="bg-green-100 hover:bg-green-100 cursor-pointer">
+            <Button
+              className="bg-green-100 hover:bg-green-100 cursor-pointer"
+              onClick={() => handleEdit(row.original)}
+            >
               <SquarePen color="#15803d" />
             </Button>
             <Button
@@ -304,5 +310,3 @@ const columns: ColumnDef<FinanceType>[] = [
 };
 
 export default FinanceTable;
-
-

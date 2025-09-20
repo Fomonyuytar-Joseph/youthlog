@@ -11,6 +11,6 @@ export type FinanceType = {
   id: string;
   name: string;
   amount: string | number;
-  date: string;
+  date: Date;
   type: "income" | "expense";
 };

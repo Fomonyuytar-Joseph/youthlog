@@ -4,5 +4,7 @@ export type MembersType = {
   phoneNumber: string;
   address: string;
   status: "active" | "inactive";
+  occupation: "student" | "employed" | "unemployed";
   role: string[];
 };
+

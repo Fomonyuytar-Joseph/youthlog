@@ -41,10 +41,11 @@ import { MembersType } from "@/types/members.type";
 
 interface MembersTableProps {
   handleDelete: (member:MembersType)=> void;
+  handleEdit:(member:MembersType)=> void;
   data: MembersType[];
 }
 
-export function MembersTable({ data, handleDelete }: MembersTableProps) {
+export function MembersTable({ data, handleDelete , handleEdit}: MembersTableProps) {
   const columns: ColumnDef<MembersType>[] = [
     {
       id: "select",
@@ -134,7 +135,10 @@ export function MembersTable({ data, handleDelete }: MembersTableProps) {
 
         return (
           <div className="flex items-center gap-4">
-            <Button className="bg-green-100 hover:bg-green-100 cursor-pointer">
+            <Button
+              className="bg-green-100 hover:bg-green-100 cursor-pointer"
+              onClick={() => handleEdit(row.original)}
+            >
               <UserRoundPen color="#15803d" />
             </Button>
             <Button

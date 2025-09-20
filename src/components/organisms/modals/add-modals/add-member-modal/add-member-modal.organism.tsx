@@ -72,8 +72,10 @@ export const AddMemberModal: React.FC<AddMemberModalProps> = ({
             <SelectContent>
               <SelectGroup>
                 <SelectLabel>role</SelectLabel>
-                <SelectItem value="apple">member</SelectItem>
-                <SelectItem value="banana">leader</SelectItem>
+                <SelectItem value="member">member</SelectItem>
+                <SelectItem value="president">President</SelectItem>
+                <SelectItem value="vicePresident">Vice President</SelectItem>
+                <SelectItem value="secretary">Secretary</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>

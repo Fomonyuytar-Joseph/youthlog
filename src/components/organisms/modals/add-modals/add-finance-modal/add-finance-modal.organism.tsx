@@ -35,13 +35,13 @@ export const AddFinanceModal: React.FC<AddFinanceModalProps> = ({
           <Label htmlFor="type">Type</Label>
           <Select>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select an occupation" />
+              <SelectValue placeholder="Select a type" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
                 <SelectLabel>type</SelectLabel>
-                <SelectItem value="apple">income</SelectItem>
-                <SelectItem value="banana">expense</SelectItem>
+                <SelectItem value="income">income</SelectItem>
+                <SelectItem value="expense">expense</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>

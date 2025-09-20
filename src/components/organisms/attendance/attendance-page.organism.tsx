@@ -3,7 +3,7 @@ import AddButton from "@/components/atoms/add-button/add-button.atom";
 import React, { useState } from "react";
 import AttendanceTable from "../tables/attendance-table/attendance-table.organism";
 import EntityCard from "@/components/molecules/finance-card/entity-card.molecule";
-import TakeAttendanceModal from "../modals/take-attendance-modal/take-attendance-modal.organism";
+import TakeAttendanceModal from "../modals/add-modals/take-attendance-modal/take-attendance-modal.organism";
 import DeleteModal from "../modals/delete-modal/delete-modal.organism";
 import { attendanceDummyData } from "@/constants/data";
 import { AttendanceType } from "@/types/attendance.type";

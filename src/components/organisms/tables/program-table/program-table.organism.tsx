@@ -34,13 +34,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { ProgramType } from "@/types/programs.type";
+import { formatDate } from "@/lib/utils/formatDate";
 
 interface ProgramTableProps {
   data: ProgramType[];
   handleDelete: (program: ProgramType) => void;
+  handleEdit : (program: ProgramType) => void
 }
 
-const ProgramTable: React.FC<ProgramTableProps> = ({ data, handleDelete }) => {
+const ProgramTable: React.FC<ProgramTableProps> = ({ data, handleDelete ,handleEdit }) => {
   const columns: ColumnDef<ProgramType>[] = [
     {
       id: "select",
@@ -86,7 +89,8 @@ const ProgramTable: React.FC<ProgramTableProps> = ({ data, handleDelete }) => {
       accessorKey: "date",
       header: "Date",
       cell: ({ row }) => {
-        return <div className="font-medium">{row.getValue("date")}</div>;
+        const formattedDate = formatDate(row.getValue("date"));
+        return <div className="font-medium">{formattedDate}</div>;
       },
     },
     {
@@ -146,7 +150,7 @@ const ProgramTable: React.FC<ProgramTableProps> = ({ data, handleDelete }) => {
 
         return (
           <div className="flex items-center gap-4">
-            <Button className="bg-green-100 hover:bg-green-100 cursor-pointer">
+            <Button className="bg-green-100 hover:bg-green-100 cursor-pointer" onClick={() => handleEdit(row.original)}>
               <UserRoundPen color="#15803d" />
             </Button>
             <Button
@@ -301,10 +305,4 @@ const ProgramTable: React.FC<ProgramTableProps> = ({ data, handleDelete }) => {
 
 export default ProgramTable;
 
-export type ProgramType = {
-  id: string;
-  name: string;
-  date: string;
-  attendanceCount: string;
-  status: "upcoming" | "completed" | "cancelled";
-};
+
