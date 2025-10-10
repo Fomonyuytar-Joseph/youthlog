@@ -19,6 +19,8 @@ import {
 import LinkButton from "./molecules/link-button/linkButton.molecule";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { createClient } from "@/lib/utils/supabase/client";
 
 const navLinkData = [
   {
@@ -52,9 +54,25 @@ const navLinkData = [
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
   const router = useRouter();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [loading, setLoading] = useState(false);
 
-  const handleLogout = () => {
-    router.push("/");
+  const supabase = createClient();
+
+
+  const handleLogout = async () => {
+    setLoading(true);
+
+    // client-side logout
+    const { error } = await supabase.auth.signOut();
+
+    setLoading(false);
+
+    if (error) {
+      console.error(error.message);
+    } else {
+      router.push("/"); // redirect after logout
+    }
   };
 
   // console.log("AppSidebar pathname:", pathname);

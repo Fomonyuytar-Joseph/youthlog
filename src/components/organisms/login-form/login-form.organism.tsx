@@ -1,5 +1,5 @@
-"use client"
-import React from 'react'
+"use client";
+import React from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,32 +10,51 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useRouter } from 'next/navigation';
-import { useForm } from '@/lib/hooks/use-form';
+import { useRouter } from "next/navigation";
+import { useForm } from "@/lib/hooks/use-form";
+import { createClient } from "@/lib/utils/supabase/client";
+import { Loader2 } from "lucide-react";
 
 
 interface LoginFormType {
   email: string;
   password: string;
+  error: string;
+  loading:boolean
 }
 
-
 const LoginForm = () => {
-
   const router = useRouter();
-  const{updateForm , formData} = useForm<LoginFormType>({
-    email: '',
-    password: ''
-  })
+  const supabase = createClient();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const { updateForm, formData, setFormData } = useForm<LoginFormType>({
+    email: "",
+    password: "",
+    error: "",
+    loading: false
+  });
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Perform login logic here (e.g., authentication)
-    // On successful login, redirect to the dashboard
-    router.push('/dashboard/overview');
-  }
-
-  
+    setFormData({ ...formData, loading: true });
+    const { error } = await supabase.auth.signInWithPassword({
+      email: formData.email,
+      password: formData.password,
+    });
+    if (error) {
+      setFormData({ ...formData, error: error.message ,loading:false});
+      
+    } else {
+      router.push("/dashboard/overview");
+      setFormData({
+        email: "",
+        password: "",
+        error: "",
+        loading: false
+      });
+    }
+    console.log(error);
+  };
 
   return (
     <div className={"flex flex-col gap-6"}>
@@ -47,7 +66,7 @@ const LoginForm = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleLogin} >
+          <form onSubmit={handleLogin}>
             <div className="grid gap-6">
               <div className="grid gap-6">
                 <div className="grid gap-3">
@@ -66,18 +85,29 @@ const LoginForm = () => {
                   <div className="flex items-center">
                     <Label htmlFor="password">Password</Label>
                   </div>
-                  <Input 
-                  id="password" 
-                  type="password"
-                  value={formData.email}
-                  name="password"
-                  onChange={updateForm} 
-                  placeholder="Your password" 
-                  // required 
+                  <Input
+                    id="password"
+                    type="password"
+                    value={formData.password}
+                    name="password"
+                    onChange={updateForm}
+                    placeholder="Your password"
+                    // required
                   />
                 </div>
-                <Button type="submit" className="w-full">
-                  Login
+                <Button
+                  type="submit"
+                  className="w-full"
+                  disabled={formData.loading}
+                >
+                  {formData.loading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Logging in...
+                    </>
+                  ) : (
+                    "Log In"
+                  )}
                 </Button>
               </div>
             </div>
@@ -86,6 +116,6 @@ const LoginForm = () => {
       </Card>
     </div>
   );
-}
+};
 
-export default LoginForm
+export default LoginForm;
