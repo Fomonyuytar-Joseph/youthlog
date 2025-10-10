@@ -11,11 +11,22 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useRouter } from 'next/navigation';
+import { useForm } from '@/lib/hooks/use-form';
+
+
+interface LoginFormType {
+  email: string;
+  password: string;
+}
 
 
 const LoginForm = () => {
 
   const router = useRouter();
+  const{updateForm , formData} = useForm<LoginFormType>({
+    email: '',
+    password: ''
+  })
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,6 +34,9 @@ const LoginForm = () => {
     // On successful login, redirect to the dashboard
     router.push('/dashboard/overview');
   }
+
+  
+
   return (
     <div className={"flex flex-col gap-6"}>
       <Card>
@@ -41,7 +55,10 @@ const LoginForm = () => {
                   <Input
                     id="email"
                     type="email"
-                    placeholder="m@example.com"
+                    name="email"
+                    placeholder="benderyouths@example.com"
+                    value={formData.email}
+                    onChange={updateForm}
                     // required
                   />
                 </div>
@@ -51,7 +68,11 @@ const LoginForm = () => {
                   </div>
                   <Input 
                   id="password" 
-                  type="password" 
+                  type="password"
+                  value={formData.email}
+                  name="password"
+                  onChange={updateForm} 
+                  placeholder="Your password" 
                   // required 
                   />
                 </div>
