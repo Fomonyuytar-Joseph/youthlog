@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -12,8 +12,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useRouter } from "next/navigation";
 import { useForm } from "@/lib/hooks/use-form";
-import { createClient } from "@/lib/utils/supabase/client";
+// import { createClient } from "@/lib/utils/supabase/client";
 import { Loader2 } from "lucide-react";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks/use-app";
+import { ApiRequestStatus } from "@/types/api/api.types";
+import { loginThunk } from "@/features/auth/login/thunks/login.thunk";
 
 
 interface LoginFormType {
@@ -25,7 +28,10 @@ interface LoginFormType {
 
 const LoginForm = () => {
   const router = useRouter();
-  const supabase = createClient();
+  const dispatch = useAppDispatch();
+
+  // const supabase = createClient();
+  const {user,requestResponse} = useAppSelector((state) => state.loginSlice);
 
   const { updateForm, formData, setFormData } = useForm<LoginFormType>({
     email: "",
@@ -37,24 +43,33 @@ const LoginForm = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormData({ ...formData, loading: true });
-    const { error } = await supabase.auth.signInWithPassword({
-      email: formData.email,
-      password: formData.password,
-    });
-    if (error) {
-      setFormData({ ...formData, error: error.message ,loading:false});
-      
-    } else {
+    dispatch(loginThunk({ email: formData.email, password: formData.password }));
+
+  };
+
+
+  useEffect(() => {
+    console.log(user,'user');
+    console.log(requestResponse,'response');
+    if (requestResponse.status === ApiRequestStatus.FULFILLED) {
       router.push("/dashboard/overview");
       setFormData({
         email: "",
         password: "",
         error: "",
-        loading: false
+        loading: false,
       });
-    }
-    console.log(error);
-  };
+    } 
+    
+    
+     if (requestResponse.status === ApiRequestStatus.REJECTED) {
+       setFormData({
+         ...formData,
+         error: "Invalid login credentials",
+         loading: false,
+       });
+     }
+  },[requestResponse])
 
   return (
     <div className={"flex flex-col gap-6"}>
