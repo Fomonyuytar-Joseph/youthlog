@@ -17,10 +17,12 @@ model AdminUser {
 model Member {
   id            String         @id @default(cuid())
   name          String
-  gender        String?
+  gender        GenderType?    @default(MALE)
   age           Int?
   phone         String?
   isActive      Boolean        @default(true)
+  role          YouthRoleType? @default(MEMBER)
+  occupation    OccupationType?  @default(STUDENT)
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   attendances   Attendance[]
@@ -78,4 +80,28 @@ enum AttendanceType {
 enum TransactionType {
   INCOME
   EXPENSE
+}
+
+enum YouthRoleType {
+  MEMBER
+  PRESIDENT
+  VICE_PRESIDENT
+  SECRETARY
+  VICE_SECRETARY
+  TREASURER
+  FINANCIAL_SECRETARY
+  SPIRITUAL_COORDINATOR
+  VICE_SPIRITUAL_COORDINATOR
+}
+
+
+enum OccupationType {
+   STUDENT
+   EMPLOYED
+   UNEMPLOYED
+}
+
+enum GenderType {
+  MALE
+  FEMALE
 }
