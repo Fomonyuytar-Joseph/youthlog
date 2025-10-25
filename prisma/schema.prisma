@@ -23,6 +23,7 @@ model Member {
   isActive      Boolean        @default(true)
   role          YouthRoleType? @default(MEMBER)
   occupation    OccupationType?  @default(STUDENT)
+  address       String?        
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   attendances   Attendance[]

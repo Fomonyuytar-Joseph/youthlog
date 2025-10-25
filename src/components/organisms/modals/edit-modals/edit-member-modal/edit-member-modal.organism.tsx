@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useState, useEffect } from "react";
-import { MembersType } from "@/types/members.type";
+import { YouthsResponseType } from "@/types/members.type";
 import {
   Select,
   SelectContent,
@@ -17,8 +17,8 @@ import {
 interface EditMemberModalProps {
   isOpen: boolean;
   setIsOpen?: React.Dispatch<React.SetStateAction<boolean>>;
-  member: MembersType | null;
-  onSave: (updatedType: MembersType) => void;
+  member: YouthsResponseType | null;
+  onSave: (updatedType: YouthsResponseType) => void;
   availableRoles: string[];
 }
 
@@ -29,17 +29,17 @@ export const EditMemberModal: React.FC<EditMemberModalProps> = ({
   onSave,
   availableRoles,
 }) => {
-  const [formData, setFormData] = useState<MembersType | null>(null);
+  const [formData, setFormData] = useState<YouthsResponseType | null>(null);
 
   // ✅ Ensure "member" role is always present
   useEffect(() => {
-    if (member) {
-      const roles = member.role ?? []; // fallback to empty array
-      setFormData({
-        ...member,
-        role: roles.includes("member") ? roles : ["member", ...roles],
-      });
-    }
+    // if (member) {
+    //   const roles = member.role ?? []; // fallback to empty array
+    //   setFormData({
+    //     ...member,
+    //     role: roles.includes("member") ? roles : ["member", ...roles],
+    //   });
+    // }
   }, [member]);
 
   const toggleRole = (role: string) => {
@@ -47,13 +47,13 @@ export const EditMemberModal: React.FC<EditMemberModalProps> = ({
     // Don't allow removing "member"
     if (role === "member") return;
 
-    const hasRole = formData.role.includes(role);
-    setFormData({
-      ...formData,
-      role: hasRole
-        ? formData.role.filter((r) => r !== role) // remove
-        : [...formData.role, role], // add
-    });
+    // const hasRole = formData.role.includes(role);
+    // setFormData({
+    //   ...formData,
+    //   role: hasRole
+    //     ? formData.role.filter((r) => r !== role) // remove
+    //     : [...formData.role, role], // add
+    // });
   };
 
   const handleSave = () => {
@@ -93,9 +93,9 @@ export const EditMemberModal: React.FC<EditMemberModalProps> = ({
             id="phoneNumber"
             name="phoneNumber"
             placeholder="62343413"
-            value={formData.phoneNumber}
+            value={formData.phone ?? ""}
             onChange={(e) =>
-              setFormData({ ...formData, phoneNumber: e.target.value })
+              setFormData({ ...formData, phone: e.target.value })
             }
           />
         </div>
@@ -105,7 +105,7 @@ export const EditMemberModal: React.FC<EditMemberModalProps> = ({
             id="address"
             name="address"
             placeholder="bokwaongo"
-            value={formData.address}
+            value={formData.address ?? ""}
             onChange={(e) =>
               setFormData({ ...formData, address: e.target.value })
             }
@@ -114,11 +114,14 @@ export const EditMemberModal: React.FC<EditMemberModalProps> = ({
         <div className="grid gap-3">
           <Label htmlFor="occupation">Occupation</Label>
           <Select
-            value={formData?.occupation} // ✅ occupation comes from member
+            value={formData.occupation ?? ""} // ✅ occupation comes from member
             onValueChange={(val) =>
               setFormData((prev) =>
                 prev
-                  ? { ...prev, occupation: val as MembersType["occupation"] }
+                  ? {
+                      ...prev,
+                      occupation: val as YouthsResponseType["occupation"],
+                    }
                   : prev
               )
             }
@@ -129,9 +132,9 @@ export const EditMemberModal: React.FC<EditMemberModalProps> = ({
             <SelectContent>
               <SelectGroup>
                 <SelectLabel>Occupation</SelectLabel>
-                <SelectItem value="student">Student</SelectItem>
-                <SelectItem value="employed">Employed</SelectItem>
-                <SelectItem value="unemployed">Unemployed</SelectItem>
+                <SelectItem value="STUDENT">Student</SelectItem>
+                <SelectItem value="EMPLOYED">Employed</SelectItem>
+                <SelectItem value="UNEMPLOYED">Unemployed</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
@@ -140,12 +143,11 @@ export const EditMemberModal: React.FC<EditMemberModalProps> = ({
         <div className="grid gap-3">
           <Label htmlFor="occupation">Status</Label>
           <Select
-            value={formData?.status} // ✅ occupation comes from member
-            onValueChange={(val) =>
-              setFormData((prev) =>
-                prev ? { ...prev, status: val as MembersType["status"] } : prev
-              )
-            }
+            value={formData.isActive ? "Active" : "InActive"}
+            onValueChange={(val) => {
+              const option = val === "active";
+              setFormData({ ...formData, isActive: option });
+            }}
           >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select a status" />
@@ -168,7 +170,7 @@ export const EditMemberModal: React.FC<EditMemberModalProps> = ({
               <div key={role} className="flex items-center gap-2">
                 <Checkbox
                   id={role}
-                  checked={formData.role.includes(role)}
+                  checked={availableRoles.includes(formData.role ?? '')}
                   disabled={role === "member"} // ✅ "member" is always checked, can't be unchecked
                   onCheckedChange={() => toggleRole(role)}
                 />

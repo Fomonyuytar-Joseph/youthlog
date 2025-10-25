@@ -1,38 +1,47 @@
 "use client";
 import AddButton from "@/components/atoms/add-button/add-button.atom";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MembersTable } from "../tables/members-table/members-table.organism";
 import AddMemberModal from "../modals/add-modals/add-member-modal/add-member-modal.organism";
-import { MembersType } from "@/types/members.type";
-import { membersDummyData } from "@/constants/data";
+import { YouthsResponseType } from "@/types/members.type";
+// import { membersDummyData } from "@/constants/data";
 import DeleteModal from "../modals/delete-modal/delete-modal.organism";
 import { EditMemberModal } from "../modals/edit-modals/edit-member-modal/edit-member-modal.organism";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks/use-app";
+import { getYouthsThunk } from "@/features/youths/get-youths/thunks/get-youths.thunk";
 
 const MembersPage = () => {
+  const dispatch = useAppDispatch();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [isEditModal, setIsEditModal] = useState(false);
-  const [selectedMember, setSelectedMember] = useState<MembersType | null>(
-    {} as MembersType
+  const [selectedMember, setSelectedMember] = useState<YouthsResponseType | null>(
+    {} as YouthsResponseType
   );
+  const { youths} = useAppSelector((state) => state.getYouthsSlice);
+  
 
-  const handleDelete = (member: MembersType) => {
+  const handleDelete = (member: YouthsResponseType) => {
     setSelectedMember(member);
     console.table(member);
     console.table(selectedMember);
     setIsDeleteModal(true);
   };
 
-  const handleEdit = (member: MembersType) => {
+  const handleEdit = (member: YouthsResponseType) => {
     setSelectedMember(member);
     setIsEditModal(true);
     console.table(member);
   };
 
-  const handleSave = (member: MembersType) => {
+  const handleSave = (member: YouthsResponseType) => {
     console.table(member);
     setIsEditModal(false);
   };
+
+  useEffect(() => {
+    dispatch(getYouthsThunk());
+  }, []);
 
   return (
     <div>
@@ -43,7 +52,7 @@ const MembersPage = () => {
         </h3>
       </div>
       <MembersTable
-        data={membersDummyData}
+        data={youths || []}
         handleDelete={handleDelete}
         handleEdit={handleEdit}
       />

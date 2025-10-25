@@ -9,7 +9,7 @@ interface GetYouthsState {
 }
 
 const initialState: GetYouthsState = {
-  youths: [],
+  youths: [] as YouthsResponseType[],
    requestResponse: {
     status: ApiRequestStatus.IDLE,
     data: [],
