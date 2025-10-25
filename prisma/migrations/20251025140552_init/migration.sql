@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Member" ADD COLUMN "occupation" TEXT DEFAULT 'STUDENT';
+ALTER TABLE "Member" ADD COLUMN "role" TEXT DEFAULT 'MEMBER';

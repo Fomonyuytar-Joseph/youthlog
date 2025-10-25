@@ -36,17 +36,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { MembersType } from "@/types/members.type";
+import { YouthsResponseType } from "@/types/members.type";
 
 
 interface MembersTableProps {
-  handleDelete: (member:MembersType)=> void;
-  handleEdit:(member:MembersType)=> void;
-  data: MembersType[];
+  handleDelete: (member: YouthsResponseType) => void;
+  handleEdit: (member: YouthsResponseType) => void;
+  data: YouthsResponseType[];
 }
 
 export function MembersTable({ data, handleDelete , handleEdit}: MembersTableProps) {
-  const columns: ColumnDef<MembersType>[] = [
+  const columns: ColumnDef<YouthsResponseType>[] = [
     {
       id: "select",
       header: ({ table }) => (
@@ -88,10 +88,10 @@ export function MembersTable({ data, handleDelete , handleEdit}: MembersTablePro
       ),
     },
     {
-      accessorKey: "phoneNumber",
+      accessorKey: "phone",
       header: "Phone Number",
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("phoneNumber")}</div>
+        <div className="capitalize">{row.getValue("phone")}</div>
       ),
     },
     {
@@ -102,7 +102,7 @@ export function MembersTable({ data, handleDelete , handleEdit}: MembersTablePro
       ),
     },
     {
-      accessorKey: "status",
+      accessorKey: "isActive",
       header: ({ column }) => {
         return (
           <Button
@@ -115,16 +115,18 @@ export function MembersTable({ data, handleDelete , handleEdit}: MembersTablePro
           </Button>
         );
       },
-      cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("status")}</div>
-      ),
+      cell: ({ row }) => {
+        const isActive = row.getValue("isActive");
+      return  <div className="capitalize">{isActive ? "Active" : "InActive"}</div>;
+      },
     },
     {
       accessorKey: "role",
       header: () => <div className="text-left">Role</div>,
       cell: ({ row }) => {
-        const roles = row.getValue("role") as string[];
-        return <div className="font-medium">{roles[0]}</div>;
+        // const role = row.getValue("role");
+        // const roles = row.getValue("role") as string[];
+        return <div className="font-medium">{row.getValue("role")}</div>;
       },
     },
     {
@@ -160,7 +162,7 @@ export function MembersTable({ data, handleDelete , handleEdit}: MembersTablePro
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
 
-  const table = useReactTable<MembersType>({
+  const table = useReactTable<YouthsResponseType>({
     data,
     columns,
     onSortingChange: setSorting,

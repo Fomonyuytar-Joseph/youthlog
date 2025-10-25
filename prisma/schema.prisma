@@ -1,15 +1,108 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model AdminUser {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+}
+
+model Member {
+  id            String         @id @default(cuid())
+  name          String
+  gender        GenderType?    @default(MALE)
+  age           Int?
+  phone         String?
+  isActive      Boolean        @default(true)
+  role          YouthRoleType? @default(MEMBER)
+  occupation    OccupationType?  @default(STUDENT)
+  address       String?        
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  attendances   Attendance[]
+  contributions Contribution[]
+}
+
+model Attendance {
+  id         String         @id @default(cuid())
+  memberId   String?
+  date       DateTime
+  type       AttendanceType
+  present    Boolean?
+  recordedBy String?
+  createdAt  DateTime       @default(now())
+  member     Member?        @relation(fields: [memberId], references: [id])
+}
+
+model Program {
+  id              String   @id @default(cuid())
+  name            String
+  date            DateTime
+  description     String?
+  totalAttendance Int?
+  review          String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Transaction {
+  id          String          @id @default(cuid())
+  type        TransactionType
+  amount      Float
+  description String?
+  date        DateTime        @default(now())
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+}
+
+model Contribution {
+  id        String   @id @default(cuid())
+  memberId  String?
+  amount    Float
+  purpose   String?
+  date      DateTime @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  member    Member?  @relation(fields: [memberId], references: [id])
+}
+
+enum AttendanceType {
+  YOUTH_MEETING
+  PROGRAM
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+enum YouthRoleType {
+  MEMBER
+  PRESIDENT
+  VICE_PRESIDENT
+  SECRETARY
+  VICE_SECRETARY
+  TREASURER
+  FINANCIAL_SECRETARY
+  SPIRITUAL_COORDINATOR
+  VICE_SPIRITUAL_COORDINATOR
+}
+
+
+enum OccupationType {
+   STUDENT
+   EMPLOYED
+   UNEMPLOYED
+}
+
+enum GenderType {
+  MALE
+  FEMALE
 }
