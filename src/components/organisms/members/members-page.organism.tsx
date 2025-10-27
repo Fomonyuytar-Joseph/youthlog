@@ -3,23 +3,35 @@ import AddButton from "@/components/atoms/add-button/add-button.atom";
 import React, { useEffect, useState } from "react";
 import { MembersTable } from "../tables/members-table/members-table.organism";
 import AddMemberModal from "../modals/add-modals/add-member-modal/add-member-modal.organism";
-import { YouthsResponseType } from "@/types/members.type";
-// import { membersDummyData } from "@/constants/data";
+import { YouthRequestType, YouthsResponseType } from "@/types/members.type";
 import DeleteModal from "../modals/delete-modal/delete-modal.organism";
 import { EditMemberModal } from "../modals/edit-modals/edit-member-modal/edit-member-modal.organism";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/use-app";
 import { getYouthsThunk } from "@/features/youths/get-youths/thunks/get-youths.thunk";
+import { useForm } from "@/lib/hooks/use-form";
+import { addYouthThunk } from "@/features/youths/add-youth/thunks/add-youth.thunk";
+import { ApiRequestStatus } from "@/types/api/api.types";
+import { resetAddYouthState } from "@/features/youths/add-youth/slices/add-youth.slice";
 
 const MembersPage = () => {
   const dispatch = useAppDispatch();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [isEditModal, setIsEditModal] = useState(false);
-  const [selectedMember, setSelectedMember] = useState<YouthsResponseType | null>(
-    {} as YouthsResponseType
+  const [selectedMember, setSelectedMember] =
+    useState<YouthsResponseType | null>({} as YouthsResponseType);
+  const { formData, setFormData, updateForm } = useForm<YouthRequestType>({
+    name: "",
+    gender: "",
+    phone: "",
+    role: "MEMBER",
+    occupation: "STUDENT",
+    address: "",
+  });
+  const { youths } = useAppSelector((state) => state.getYouthsSlice);
+  const { requestResponse: addYouthResponse, youth } = useAppSelector(
+    (state) => state.addYouthSlice
   );
-  const { youths} = useAppSelector((state) => state.getYouthsSlice);
-  
 
   const handleDelete = (member: YouthsResponseType) => {
     setSelectedMember(member);
@@ -39,8 +51,28 @@ const MembersPage = () => {
     setIsEditModal(false);
   };
 
+  const handleAddYouth = () => {
+    dispatch(addYouthThunk(formData));
+  };
+
+  useEffect(() => {
+    if (addYouthResponse.status === ApiRequestStatus.FULFILLED) {
+      setIsAddModalOpen(false);
+      dispatch(resetAddYouthState());
+    }
+
+    if (addYouthResponse.status === ApiRequestStatus.REJECTED) {
+      setIsAddModalOpen(false);
+      dispatch(resetAddYouthState());
+      console.log(addYouthResponse);
+    }
+
+    console.log(youth);
+  }, [addYouthResponse, dispatch, youth]);
+
   useEffect(() => {
     dispatch(getYouthsThunk());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -57,7 +89,15 @@ const MembersPage = () => {
         handleEdit={handleEdit}
       />
       {isAddModalOpen && (
-        <AddMemberModal isOpen={isAddModalOpen} setIsOpen={setIsAddModalOpen} />
+        <AddMemberModal
+          isOpen={isAddModalOpen}
+          setIsOpen={setIsAddModalOpen}
+          updateForm={updateForm}
+          form={formData}
+          setForm={setFormData}
+          handleAddYouth={handleAddYouth}
+          loading={addYouthResponse.status === ApiRequestStatus.PENDING}
+        />
       )}
 
       {isDeleteModal && (
