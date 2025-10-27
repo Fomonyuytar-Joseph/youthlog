@@ -13,7 +13,6 @@ export type YouthsResponseType = {
   id: string;
   name: string;
   gender: null | string;
-  age: null | string | number;
   phone: null | string ;
   isActive: boolean;
   role: string | null;
@@ -22,4 +21,14 @@ export type YouthsResponseType = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+
+export type YouthRequestType = {
+name:string,
+gender:string,
+phone:string,
+role:string,
+occupation:string,
+address:string
+}
 

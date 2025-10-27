@@ -7,6 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Loader2 } from "lucide-react";
 
 interface ModalContainerProps {
   isOpen: boolean;
@@ -18,6 +19,7 @@ interface ModalContainerProps {
   onPrimaryButtonClick?: () => void;
   children?: React.ReactNode;
   hideDefaultButtons?: boolean;
+  loading?: boolean;
 }
 
 export const ModalContainer: React.FC<ModalContainerProps> = ({
@@ -30,6 +32,7 @@ export const ModalContainer: React.FC<ModalContainerProps> = ({
   onPrimaryButtonClick,
   children,
   hideDefaultButtons = false,
+  loading,
 }) => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -43,17 +46,30 @@ export const ModalContainer: React.FC<ModalContainerProps> = ({
             <DialogDescription>{description}</DialogDescription>
           </DialogHeader>
           {children}
-          {!hideDefaultButtons &&<DialogFooter>
-            <Button
-              variant="outline"
-              onClick={() => setIsOpen && setIsOpen(false)}
-            >
-              {secondaryButtonText}
-            </Button>
-            <Button type="submit" onClick={onPrimaryButtonClick}>
-              {primaryButtonText}
-            </Button>
-          </DialogFooter>}
+          {!hideDefaultButtons && (
+            <DialogFooter>
+              <Button
+                variant="outline"
+                onClick={() => setIsOpen && setIsOpen(false)}
+              >
+                {secondaryButtonText}
+              </Button>
+              <Button
+                type="submit"
+                onClick={onPrimaryButtonClick}
+                disabled={loading}
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Loading ...
+                  </>
+                ) : (
+                  primaryButtonText
+                )}
+              </Button>
+            </DialogFooter>
+          )}
         </DialogContent>
       </form>
     </Dialog>

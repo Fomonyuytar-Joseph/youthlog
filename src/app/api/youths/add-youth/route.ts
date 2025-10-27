@@ -6,17 +6,17 @@ import { NextRequest, NextResponse } from "next/server";
 const prisma = new PrismaClient();
 
 export async function POST(request: NextRequest) {
-  const { name, gender, age, phone, isActive, role, occupation } =
+  const { name, gender, phone, isActive, role, occupation , address } =
     await request.json();
   const newMember = await prisma.member.create({
     data: {
       name,
       gender,
-      age,
       phone,
       isActive,
       role,
       occupation,
+      address
     },
   });
   return NextResponse.json(newMember);

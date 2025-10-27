@@ -69,7 +69,7 @@ const LoginForm = () => {
          loading: false,
        });
      }
-  },[requestResponse])
+  },[formData, requestResponse, router, setFormData, user])
 
   return (
     <div className={"flex flex-col gap-6"}>
