@@ -6,9 +6,9 @@ const prisma = new PrismaClient();
 
 export async function DELETE(
   request: NextRequest,
-  context: { params: { id: string } }
+  { params }: { params: { id: string } }
 ) {
-  const { id: userId } = context.params;
+  const userId = params.id; // string from the URL segment
   if (!userId)
     return NextResponse.json({ error: "Missing id" }, { status: 400 });
 
