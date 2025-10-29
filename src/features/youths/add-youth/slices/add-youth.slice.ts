@@ -3,19 +3,18 @@ import { createSlice } from "@reduxjs/toolkit";
 import { addYouthThunk } from "../thunks/add-youth.thunk";
 import { YouthsResponseType } from "@/types/members.type";
 
-interface GetYouthsState {
+interface addYouthState {
   youth: YouthsResponseType | null;
   requestResponse: ApiRequestDataType;
 }
 
-const initialState: GetYouthsState = {
+const initialState: addYouthState = {
   youth: {} as YouthsResponseType,
-   requestResponse: {
+  requestResponse: {
     status: ApiRequestStatus.IDLE,
     data: [],
-  }
+  },
 };
-
 
 const addYouthSlice = createSlice({
   name: "addYouth",
@@ -39,7 +38,7 @@ const addYouthSlice = createSlice({
       .addCase(addYouthThunk.rejected, (state, action) => {
         state.requestResponse.status = ApiRequestStatus.REJECTED;
         state.requestResponse.error = action.error ?? "Something went wrong";
-        console.log(state.requestResponse)
+        console.log(state.requestResponse);
       });
   },
 });

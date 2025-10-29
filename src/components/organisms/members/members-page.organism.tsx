@@ -12,6 +12,9 @@ import { useForm } from "@/lib/hooks/use-form";
 import { addYouthThunk } from "@/features/youths/add-youth/thunks/add-youth.thunk";
 import { ApiRequestStatus } from "@/types/api/api.types";
 import { resetAddYouthState } from "@/features/youths/add-youth/slices/add-youth.slice";
+import { toast } from "sonner";
+import { deleteYouthThunk } from "@/features/youths/delete-youth/thunks/delete-youth.thunk";
+import { resetDeleteYouthState } from "@/features/youths/delete-youth/slices/delete-youth.slice";
 
 const MembersPage = () => {
   const dispatch = useAppDispatch();
@@ -32,12 +35,19 @@ const MembersPage = () => {
   const { requestResponse: addYouthResponse, youth } = useAppSelector(
     (state) => state.addYouthSlice
   );
+  const { requestResponse: deleteYouthResponse } = useAppSelector(
+    (state) => state.deleteYouthSlice
+  );
 
   const handleDelete = (member: YouthsResponseType) => {
     setSelectedMember(member);
     console.table(member);
     console.table(selectedMember);
     setIsDeleteModal(true);
+  };
+
+  const handleDeleteYouth = (id: string) => {
+    dispatch(deleteYouthThunk(id));
   };
 
   const handleEdit = (member: YouthsResponseType) => {
@@ -58,17 +68,37 @@ const MembersPage = () => {
   useEffect(() => {
     if (addYouthResponse.status === ApiRequestStatus.FULFILLED) {
       setIsAddModalOpen(false);
-      dispatch(resetAddYouthState());
+      toast.success("New Youth has been added");
+
+      setTimeout(() => {
+        dispatch(resetAddYouthState());
+      }, 2000);
     }
 
     if (addYouthResponse.status === ApiRequestStatus.REJECTED) {
       setIsAddModalOpen(false);
       dispatch(resetAddYouthState());
-      console.log(addYouthResponse);
+      console.log(addYouthResponse.error);
+      toast.error("Failed to add new Youth. Please try again.");
+    }
+  }, [addYouthResponse, dispatch, youth]);
+
+  useEffect(() => {
+    if (deleteYouthResponse.status === ApiRequestStatus.FULFILLED) {
+      setIsDeleteModal(false);
+      toast.success("Youth has been deleted");
+      dispatch(resetDeleteYouthState());
+      dispatch(getYouthsThunk());
     }
 
-    console.log(youth);
-  }, [addYouthResponse, dispatch, youth]);
+    if (deleteYouthResponse.status === ApiRequestStatus.REJECTED) {
+      setIsDeleteModal(false);
+      console.log(deleteYouthResponse.error);
+      toast.error("Failed to delete Youth. Please try again.");
+      dispatch(resetDeleteYouthState());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deleteYouthResponse]);
 
   useEffect(() => {
     dispatch(getYouthsThunk());
@@ -101,7 +131,12 @@ const MembersPage = () => {
       )}
 
       {isDeleteModal && (
-        <DeleteModal isOpen={isDeleteModal} setIsOpen={setIsDeleteModal} />
+        <DeleteModal
+          isOpen={isDeleteModal}
+          setIsOpen={setIsDeleteModal}
+          onClick={() => handleDeleteYouth(selectedMember?.id as string)}
+          loading={deleteYouthResponse.status === ApiRequestStatus.PENDING}
+        />
       )}
       <EditMemberModal
         isOpen={isEditModal}

@@ -1,15 +1,15 @@
 import api from "@/lib/axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-export const getYouthsThunk = createAsyncThunk(
-  "youths/get-youths",
-  async (_, thunkAPI) => {
+export const deleteYouthThunk = createAsyncThunk(
+  "youths/delete-youth",
+  async (id: string, thunkAPI) => {
     try {
-      const res = await api.get("/youths/get-youths");
-      return res.data; // should return youths info
+      const res = await api.delete(`/youths/delete-youth/${id}`);
+      return res.data; // should return deleted youth info
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      console.log(err, "youths thunk error");
+      console.log(err, "delete youth thunk error");
       return thunkAPI.rejectWithValue(
         err.response?.data?.message || err.message
       );

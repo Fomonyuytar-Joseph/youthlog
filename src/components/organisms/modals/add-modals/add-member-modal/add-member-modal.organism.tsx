@@ -31,7 +31,7 @@ export const AddMemberModal: React.FC<AddMemberModalProps> = ({
   form,
   setForm,
   handleAddYouth,
-  loading
+  loading,
 }) => {
   return (
     <ModalContainer

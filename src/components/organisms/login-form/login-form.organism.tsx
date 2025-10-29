@@ -17,13 +17,14 @@ import { Loader2 } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/use-app";
 import { ApiRequestStatus } from "@/types/api/api.types";
 import { loginThunk } from "@/features/auth/login/thunks/login.thunk";
-
+import { toast } from "sonner";
+import { resetAuthReq } from "@/features/auth/login/slices/login.slice";
 
 interface LoginFormType {
   email: string;
   password: string;
   error: string;
-  loading:boolean
+  loading: boolean;
 }
 
 const LoginForm = () => {
@@ -31,45 +32,49 @@ const LoginForm = () => {
   const dispatch = useAppDispatch();
 
   // const supabase = createClient();
-  const {user,requestResponse} = useAppSelector((state) => state.loginSlice);
+  const { user, requestResponse } = useAppSelector((state) => state.loginSlice);
 
   const { updateForm, formData, setFormData } = useForm<LoginFormType>({
     email: "",
     password: "",
     error: "",
-    loading: false
+    loading: false,
   });
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormData({ ...formData, loading: true });
-    dispatch(loginThunk({ email: formData.email, password: formData.password }));
-
+    dispatch(
+      loginThunk({ email: formData.email, password: formData.password })
+    );
   };
 
-
   useEffect(() => {
-    console.log(user,'user');
-    console.log(requestResponse,'response');
+    console.log(user, "user");
+    console.log(requestResponse, "response");
     if (requestResponse.status === ApiRequestStatus.FULFILLED) {
       router.push("/dashboard/overview");
+      dispatch(resetAuthReq());
       setFormData({
         email: "",
         password: "",
         error: "",
         loading: false,
       });
-    } 
-    
-    
-     if (requestResponse.status === ApiRequestStatus.REJECTED) {
-       setFormData({
-         ...formData,
-         error: "Invalid login credentials",
-         loading: false,
-       });
-     }
-  },[formData, requestResponse, router, setFormData, user])
+    }
+
+    if (requestResponse.status === ApiRequestStatus.REJECTED) {
+      setFormData({
+        ...formData,
+        error: "Invalid login credentials",
+        loading: false,
+      });
+
+      toast.error("Invalid login credentials");
+      dispatch(resetAuthReq());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [requestResponse]);
 
   return (
     <div className={"flex flex-col gap-6"}>

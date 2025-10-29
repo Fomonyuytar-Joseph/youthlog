@@ -15,7 +15,6 @@ export const addYouthThunk = createAsyncThunk(
         occupation: youth.occupation,
         address: youth.address,
       });
-      console.log(res, "youths added res");
       return res.data; // should return youth info
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
