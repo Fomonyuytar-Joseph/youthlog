@@ -36,13 +36,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { FinanceType } from "@/types/finance.type";
+import { FinanceResponseType } from "@/types/finance.type";
 import { formatDate } from "@/lib/utils/formatDate";
 
 interface FinanceTableProps {
-  data: FinanceType[];
-  handleDelete: (finance: FinanceType) => void;
-  handleEdit: (finance: FinanceType) => void;
+  data: FinanceResponseType[];
+  handleDelete: (finance: FinanceResponseType) => void;
+  handleEdit: (finance: FinanceResponseType) => void;
 }
 
 const FinanceTable: React.FC<FinanceTableProps> = ({
@@ -50,7 +50,7 @@ const FinanceTable: React.FC<FinanceTableProps> = ({
   handleDelete,
   handleEdit,
 }) => {
-  const columns: ColumnDef<FinanceType>[] = [
+  const columns: ColumnDef<FinanceResponseType>[] = [
     {
       id: "select",
       header: ({ table }) => (
@@ -74,7 +74,7 @@ const FinanceTable: React.FC<FinanceTableProps> = ({
       enableHiding: false,
     },
     {
-      accessorKey: "name",
+      accessorKey: "title",
       header: ({ column }) => {
         return (
           <Button
@@ -88,7 +88,7 @@ const FinanceTable: React.FC<FinanceTableProps> = ({
         );
       },
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("name")}</div>
+        <div className="capitalize">{row.getValue("title")}</div>
       ),
     },
     {
@@ -128,7 +128,7 @@ const FinanceTable: React.FC<FinanceTableProps> = ({
         return (
           <div
             className={`capitalize w-fit text-xs rounded-full px-2 py-1 ${
-              type === "income"
+              type === "INCOME"
                 ? "text-green-500 bg-green-200"
                 : "text-red-500 bg-red-200"
             }`}
@@ -150,8 +150,6 @@ const FinanceTable: React.FC<FinanceTableProps> = ({
       id: "actions",
       enableHiding: false,
       cell: ({ row }) => {
-        // console.log("Row data:", row.original);
-
         return (
           <div className="flex items-center gap-4">
             <Button
@@ -202,9 +200,9 @@ const FinanceTable: React.FC<FinanceTableProps> = ({
       <div className="flex items-center gap-4 py-4">
         <Input
           placeholder="Search finance name ..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+          value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
+            table.getColumn("title")?.setFilterValue(event.target.value)
           }
           className="max-w-sm font-sans"
         />

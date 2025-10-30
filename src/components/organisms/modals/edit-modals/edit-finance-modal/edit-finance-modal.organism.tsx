@@ -12,6 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useState, useEffect } from "react";
+import { FinanceResponseType } from "@/types/finance.type";
 
 export type FinanceType = {
   id: string;
@@ -26,8 +27,8 @@ export type FinanceType = {
 interface EditFinanceModalProps {
   isOpen: boolean;
   setIsOpen?: React.Dispatch<React.SetStateAction<boolean>>;
-  finance: FinanceType | null;
-  onSave: (updatedFinance: FinanceType) => void;
+  finance: FinanceResponseType | null;
+  onSave: (updatedFinance: FinanceResponseType) => void;
   recordedByOptions?: string[]; // list of youths
 }
 
@@ -36,9 +37,10 @@ export const EditFinanceModal: React.FC<EditFinanceModalProps> = ({
   setIsOpen,
   finance,
   onSave,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   recordedByOptions = ["Joseph", "Mary"],
 }) => {
-  const [formData, setFormData] = useState<FinanceType | null>(null);
+  const [formData, setFormData] = useState<FinanceResponseType | null>(null);
 
   useEffect(() => {
     if (finance) setFormData(finance);
@@ -52,10 +54,13 @@ export const EditFinanceModal: React.FC<EditFinanceModalProps> = ({
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSelectChange = (field: keyof FinanceType, value: string) => {
+  const handleSelectChange = (
+    field: keyof FinanceResponseType,
+    value: string
+  ) => {
     if (!formData) return;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    setFormData({ ...formData, [field]: value as any  });
+    setFormData({ ...formData, [field]: value as any });
   };
 
   const handleSave = () => {
@@ -101,10 +106,10 @@ export const EditFinanceModal: React.FC<EditFinanceModalProps> = ({
         <div className="grid gap-3">
           <Label htmlFor="name">Title</Label>
           <Input
-            id="name"
-            name="name"
+            id="title"
+            name="title"
             placeholder="Ex. Offering"
-            value={formData.name}
+            value={formData.title}
             onChange={handleChange}
           />
         </div>
@@ -129,11 +134,9 @@ export const EditFinanceModal: React.FC<EditFinanceModalProps> = ({
             id="date"
             name="date"
             type="date"
-            value={
-              formData?.date ? formData.date.toISOString().substring(0, 10) : ""
-            } // YYYY-MM-DD
+            value={formData.date} // YYYY-MM-DD
             onChange={(e) =>
-              setFormData({ ...formData, date: new Date(e.target.value) })
+              setFormData({ ...formData, date: e.target.value })
             }
           />
         </div>
@@ -151,7 +154,7 @@ export const EditFinanceModal: React.FC<EditFinanceModalProps> = ({
         </div>
 
         {/* Recorded By */}
-        <div className="grid gap-3">
+        {/* <div className="grid gap-3">
           <Label htmlFor="recordedBy">Recorded By</Label>
           <Select
             value={formData.recordedBy || ""}
@@ -171,7 +174,7 @@ export const EditFinanceModal: React.FC<EditFinanceModalProps> = ({
               </SelectGroup>
             </SelectContent>
           </Select>
-        </div>
+        </div> */}
       </div>
     </ModalContainer>
   );

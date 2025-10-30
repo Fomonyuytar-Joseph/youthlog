@@ -14,3 +14,24 @@ export type FinanceType = {
   date: Date;
   type: "income" | "expense";
 };
+
+
+export type FinanceRequestType = {
+  type: string;
+  // type: "INCOME" | "EXPENSE";
+  amount: number | string;
+  date: string ;
+  title:string;
+  description?: string;
+};
+
+export type FinanceResponseType = {
+  id: string;
+  type: string;
+  amount: number | string;
+  title:string;
+  description?: string;
+  date: string;
+  createdAt: Date;
+  updatedAt: Date;
+};

@@ -55,6 +55,7 @@ model Finance {
   id          String          @id @default(cuid())
   type        FinanceType
   amount      Float
+  title       String
   description String?
   date        DateTime        @default(now())
   createdAt   DateTime        @default(now())

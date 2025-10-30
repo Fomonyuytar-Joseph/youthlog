@@ -16,14 +16,13 @@ export async function POST(req: NextRequest) {
 
   // Find the user in DB
   const user = await prisma.adminUser.findUnique({ where: { email } });
-  console.log(user,'user');
+  // console.log(user,'user');
   if (!user) {
     return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
   }
 
   // Compare passwords
   const isMatch: boolean = await bcrypt.compare(password as string, user.password as string);
-  console.log(isMatch,'isMatch');
   if (!isMatch) {
     return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
   }
