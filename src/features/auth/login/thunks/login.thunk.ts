@@ -10,7 +10,6 @@ export const loginThunk = createAsyncThunk(
   ) => {
     try {
       const res = await api.post("/auth/login", { email, password });
-      console.log(res,'res')
       return res.data; // should return user info
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {

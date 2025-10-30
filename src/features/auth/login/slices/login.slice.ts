@@ -20,7 +20,7 @@ const loginSlice = createSlice({
   name: "login",
   initialState,
   reducers: {
-    resetAuthReqRes(state) {
+    resetAuthReq(state) {
       state.requestResponse.status = ApiRequestStatus.IDLE;
     },
   },
@@ -43,5 +43,5 @@ const loginSlice = createSlice({
   },
 });
 
-export const { resetAuthReqRes } = loginSlice.actions;
+export const { resetAuthReq } = loginSlice.actions;
 export default loginSlice.reducer;

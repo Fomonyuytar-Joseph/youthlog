@@ -1,16 +1,22 @@
-import ModalContainer from '@/components/molecules/modal/modal.molecule';
-import { Button } from '@/components/ui/button';
-import { Trash2 } from 'lucide-react';
-import React from 'react'
+import ModalContainer from "@/components/molecules/modal/modal.molecule";
+import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
+import { Trash2 } from "lucide-react";
+import React from "react";
 
-
-interface DeleteModalProps{
-    isOpen: boolean;
-    setIsOpen?: React.Dispatch<React.SetStateAction<boolean>>;
-    onClick?:()=>void
+interface DeleteModalProps {
+  isOpen: boolean;
+  setIsOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+  onClick?: () => void;
+  loading?: boolean;
 }
 
-const DeleteModal: React.FC<DeleteModalProps> = ({isOpen , setIsOpen ,onClick}) => {
+const DeleteModal: React.FC<DeleteModalProps> = ({
+  isOpen,
+  setIsOpen,
+  onClick,
+  loading,
+}) => {
   return (
     <ModalContainer isOpen={isOpen} setIsOpen={setIsOpen} hideDefaultButtons>
       <div className="text-center flex flex-col gap-3">
@@ -31,8 +37,19 @@ const DeleteModal: React.FC<DeleteModalProps> = ({isOpen , setIsOpen ,onClick}) 
           >
             Cancel
           </Button>
-          <Button variant={"destructive"} onClick={onClick} className="cursor-pointer flex-1" >
-            Confirm
+          <Button
+            variant={"destructive"}
+            onClick={onClick}
+            className="cursor-pointer flex-1"
+          >
+            {loading ? (
+              <>
+                <Spinner />
+                Confirming...
+              </>
+            ) : (
+              "Confirm"
+            )}
           </Button>
         </div>
       </div>
@@ -40,4 +57,4 @@ const DeleteModal: React.FC<DeleteModalProps> = ({isOpen , setIsOpen ,onClick}) 
   );
 };
 
-export default DeleteModal
+export default DeleteModal;

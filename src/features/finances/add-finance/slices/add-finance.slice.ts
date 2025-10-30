@@ -1,41 +1,41 @@
 import { ApiRequestDataType, ApiRequestStatus } from "@/types/api/api.types";
 import { createSlice } from "@reduxjs/toolkit";
-import { getYouthsThunk } from "../thunks/get-youths.thunk";
-import { YouthsResponseType } from "@/types/members.type";
+import { addFinanceThunk } from "../thunks/add-finance.thunk";
+import { FinanceResponseType } from "@/types/finance.type";
 
-interface GetYouthsState {
-  youths: YouthsResponseType[] | null;
+interface AddFinanceState {
+  finance: FinanceResponseType | null;
   requestResponse: ApiRequestDataType;
 }
 
-const initialState: GetYouthsState = {
-  youths: [] as YouthsResponseType[],
+const initialState: AddFinanceState = {
+  finance:{} as FinanceResponseType,
   requestResponse: {
     status: ApiRequestStatus.IDLE,
     data: [],
   },
 };
 
-const getYouthsSlice = createSlice({
-  name: "getYouths",
+const addFinanceSlice = createSlice({
+  name: "addFinance",
   initialState,
   reducers: {
-    resetGetYouthState(state) {
+    resetAddFinanceState(state) {
       state.requestResponse.status = ApiRequestStatus.IDLE;
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getYouthsThunk.pending, (state) => {
+      .addCase(addFinanceThunk.pending, (state) => {
         state.requestResponse.status = ApiRequestStatus.PENDING;
       })
-      .addCase(getYouthsThunk.fulfilled, (state, action) => {
+      .addCase(addFinanceThunk.fulfilled, (state, action) => {
         state.requestResponse.status = ApiRequestStatus.FULFILLED;
         state.requestResponse.data = action.payload;
-        console.log("youths fetched:", action.payload);
-        state.youths = action.payload; // assuming payload has youths
+        console.log("finance added:", action.payload);
+        state.finance = action.payload; // assuming payload has youths
       })
-      .addCase(getYouthsThunk.rejected, (state, action) => {
+      .addCase(addFinanceThunk.rejected, (state, action) => {
         state.requestResponse.status = ApiRequestStatus.REJECTED;
         state.requestResponse.error = action.error ?? "Something went wrong";
         console.log(state.requestResponse);
@@ -43,5 +43,5 @@ const getYouthsSlice = createSlice({
   },
 });
 
-export const { resetGetYouthState } = getYouthsSlice.actions;
-export default getYouthsSlice.reducer;
+export const { resetAddFinanceState } = addFinanceSlice.actions;
+export default addFinanceSlice.reducer;

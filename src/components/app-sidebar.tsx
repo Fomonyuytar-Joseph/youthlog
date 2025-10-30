@@ -75,7 +75,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     }
   };
 
-  // console.log("AppSidebar pathname:", pathname);
   return (
     <Sidebar {...props}>
       <SidebarHeader className="hover:bg-transparent">

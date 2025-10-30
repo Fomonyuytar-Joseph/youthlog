@@ -1,4 +1,6 @@
-export function formatDate(date: Date): string {
+export function formatDate(date: string | Date): string {
+  const d = typeof date === "string" ? new Date(date) : date;
+
   const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const months = [
     "Jan",
@@ -15,14 +17,14 @@ export function formatDate(date: Date): string {
     "Dec",
   ];
 
-  const dayName = days[date.getDay()]; // 0-6
-  const dayNumber = date.getDate(); // 1-31
-  const monthName = months[date.getMonth()]; // 0-11
-  const year = date.getFullYear();
+  const dayName = days[d.getDay()];
+  const dayNumber = d.getDate();
+  const monthName = months[d.getMonth()];
+  const year = d.getFullYear();
 
   return `${dayName} ${dayNumber} ${monthName} ${year}`;
 }
 
 // Example usage
-const today = new Date();
-console.log(formatDate(today)); // e.g. "Sat 20 Sep 2025"
+// const today = new Date();
+// console.log(formatDate(today)); // e.g. "Sat 20 Sep 2025"

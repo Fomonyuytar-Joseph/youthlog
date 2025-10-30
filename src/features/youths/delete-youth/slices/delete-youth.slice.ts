@@ -1,41 +1,40 @@
 import { ApiRequestDataType, ApiRequestStatus } from "@/types/api/api.types";
 import { createSlice } from "@reduxjs/toolkit";
-import { getYouthsThunk } from "../thunks/get-youths.thunk";
 import { YouthsResponseType } from "@/types/members.type";
+import { deleteYouthThunk } from "../thunks/delete-youth.thunk";
 
-interface GetYouthsState {
-  youths: YouthsResponseType[] | null;
+interface deleteYouthState {
+  youth: YouthsResponseType | null;
   requestResponse: ApiRequestDataType;
 }
 
-const initialState: GetYouthsState = {
-  youths: [] as YouthsResponseType[],
+const initialState: deleteYouthState = {
+  youth: {} as YouthsResponseType,
   requestResponse: {
     status: ApiRequestStatus.IDLE,
     data: [],
   },
 };
 
-const getYouthsSlice = createSlice({
-  name: "getYouths",
+const deleteYouthSlice = createSlice({
+  name: "deleteYouth",
   initialState,
   reducers: {
-    resetGetYouthState(state) {
+    resetDeleteYouthState(state) {
       state.requestResponse.status = ApiRequestStatus.IDLE;
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getYouthsThunk.pending, (state) => {
+      .addCase(deleteYouthThunk.pending, (state) => {
         state.requestResponse.status = ApiRequestStatus.PENDING;
       })
-      .addCase(getYouthsThunk.fulfilled, (state, action) => {
+      .addCase(deleteYouthThunk.fulfilled, (state, action) => {
         state.requestResponse.status = ApiRequestStatus.FULFILLED;
         state.requestResponse.data = action.payload;
-        console.log("youths fetched:", action.payload);
-        state.youths = action.payload; // assuming payload has youths
+        state.youth = action.payload; // assuming payload has been deleted
       })
-      .addCase(getYouthsThunk.rejected, (state, action) => {
+      .addCase(deleteYouthThunk.rejected, (state, action) => {
         state.requestResponse.status = ApiRequestStatus.REJECTED;
         state.requestResponse.error = action.error ?? "Something went wrong";
         console.log(state.requestResponse);
@@ -43,5 +42,5 @@ const getYouthsSlice = createSlice({
   },
 });
 
-export const { resetGetYouthState } = getYouthsSlice.actions;
-export default getYouthsSlice.reducer;
+export const { resetDeleteYouthState } = deleteYouthSlice.actions;
+export default deleteYouthSlice.reducer;

@@ -4,10 +4,13 @@ import { NextRequest, NextResponse } from "next/server";
 // ✅ Instantiate Prisma Client
 const prisma = new PrismaClient();
 
-export async function DELETE(request: NextRequest) {
-  const { id } = await request.json();
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const financeId = params.id;
   const deletedFinance = await prisma.finance.delete({
-    where: { id },
+    where: { id: financeId },
   });
   return NextResponse.json(deletedFinance);
 }
