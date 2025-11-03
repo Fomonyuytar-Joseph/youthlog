@@ -20,10 +20,10 @@ export default function FinanceFilter({
 }: FinanceFilterProps) {
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
-  const currentMonth = currentDate.toLocaleString("default", { month: "long" });
+//   const currentMonth = currentDate.toLocaleString("default", { month: "long" });
 
   const [selectedYear, setSelectedYear] = useState(currentYear);
-  const [selectedMonth, setSelectedMonth] = useState(currentMonth);
+  const [selectedMonth, setSelectedMonth] = useState("All Months");
 
   // Include "All Months" + all 12 months
   const months = [

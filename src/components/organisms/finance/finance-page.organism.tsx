@@ -23,6 +23,8 @@ const FinancePage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [isEditModal, setIsEditModal] = useState(false);
+  const [year, setYear] = useState(new Date().getFullYear());
+  const [month, setMonth] = useState<string>("All Months");
   const [selectedFinance, setSelectedFinance] =
     useState<FinanceResponseType | null>({} as FinanceResponseType);
   useState<FinanceResponseType | null>({} as FinanceResponseType);
@@ -34,7 +36,10 @@ const FinancePage = () => {
     title: "",
     // recordedBy: "",
   });
-  const { finances ,totalExpense , totalIncome } = useAppSelector((state) => state.getFinanceSlice);
+
+  const { finances, totalExpense, totalIncome } = useAppSelector(
+    (state) => state.getFinanceSlice
+  );
   const { requestResponse: addFinanceResponse, finance } = useAppSelector(
     (state) => state.addFinanceSlice
   );
@@ -75,7 +80,7 @@ const FinancePage = () => {
       setTimeout(() => {
         dispatch(resetAddFinanceState());
       }, 2000);
-      dispatch(getFinancesThunk());
+      dispatch(getFinancesThunk({ year, month }));
       setFormData({
         amount: "",
         type: "INCOME",
@@ -99,7 +104,7 @@ const FinancePage = () => {
       setIsDeleteModal(false);
       toast.success("Finance has been deleted");
       dispatch(resetDeleteFinanceState());
-      dispatch(getFinancesThunk());
+      dispatch(getFinancesThunk({ year, month }));
     }
 
     if (deleteFinanceResponse.status === ApiRequestStatus.REJECTED) {
@@ -112,17 +117,19 @@ const FinancePage = () => {
   }, [deleteFinanceResponse]);
 
   useEffect(() => {
-    dispatch(getFinancesThunk());
+    dispatch(getFinancesThunk({ year, month }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  
-  const handleFilterChange = (filter: { year: number; month: string }) => {
-    console.log("Selected Filter:", filter);
 
-    // Example:
-    // if (filter.month === "All Months") fetch all finance records for that year
-    // else fetch records for that specific month & year
+  const handleFilterChange = (filter: { year: number; month: string }) => {
+    // console.log("Selected Filter:", filter);
+    setYear(filter.year);
+    setMonth(filter.month);
   };
+
+  useEffect(() => {
+    dispatch(getFinancesThunk({ year, month }));
+  }, [year, month, dispatch]);
 
   return (
     <div>
@@ -150,7 +157,7 @@ const FinancePage = () => {
         />
       </div>
       <FinanceFilter
-        availableYears={[2023, 2024, 2025]}
+        availableYears={[2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030]}
         onFilterChange={handleFilterChange}
       />
       <FinanceTable

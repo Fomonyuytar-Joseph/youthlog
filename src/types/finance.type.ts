@@ -1,11 +1,10 @@
-export interface RecentTransactionsType{
-    id:number;
-    description:string;
-    amount:number;
-    date:string;
-    type:string;
+export interface RecentTransactionsType {
+  id: number;
+  description: string;
+  amount: number;
+  date: string;
+  type: string;
 }
-
 
 export type FinanceType = {
   id: string;
@@ -15,13 +14,12 @@ export type FinanceType = {
   type: "income" | "expense";
 };
 
-
 export type FinanceRequestType = {
   type: string;
   // type: "INCOME" | "EXPENSE";
   amount: number | string;
-  date: string ;
-  title:string;
+  date: string;
+  title: string;
   description?: string;
 };
 
@@ -29,9 +27,14 @@ export type FinanceResponseType = {
   id: string;
   type: string;
   amount: number | string;
-  title:string;
+  title: string;
   description?: string;
   date: string;
   createdAt: Date;
   updatedAt: Date;
+};
+
+export type GetFinanceRequestType = {
+  year: number;
+  month: string;
 };
