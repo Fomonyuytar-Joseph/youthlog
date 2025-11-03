@@ -16,6 +16,7 @@ import { getFinancesThunk } from "@/features/finances/get-finances/thunks/get-fi
 import { toast } from "sonner";
 import { resetDeleteFinanceState } from "@/features/finances/delete-finance/slices/delete-finance.slice";
 import { resetAddFinanceState } from "@/features/finances/add-finance/slices/add-finance.slice";
+import FinanceFilter from "@/components/molecules/finance-filter/finance-filter.molecule";
 
 const FinancePage = () => {
   const dispatch = useAppDispatch();
@@ -33,7 +34,7 @@ const FinancePage = () => {
     title: "",
     // recordedBy: "",
   });
-  const { finances } = useAppSelector((state) => state.getFinanceSlice);
+  const { finances ,totalExpense , totalIncome } = useAppSelector((state) => state.getFinanceSlice);
   const { requestResponse: addFinanceResponse, finance } = useAppSelector(
     (state) => state.addFinanceSlice
   );
@@ -114,20 +115,44 @@ const FinancePage = () => {
     dispatch(getFinancesThunk());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  
+  const handleFilterChange = (filter: { year: number; month: string }) => {
+    console.log("Selected Filter:", filter);
+
+    // Example:
+    // if (filter.month === "All Months") fetch all finance records for that year
+    // else fetch records for that specific month & year
+  };
 
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
         <AddButton text="Record Finance" onClick={() => setIsModalOpen(true)} />
         <h3 className="text-base font-semibold text-slate-500">
-          Balance: 500XAF
+          Balance: {totalIncome - totalExpense} XAF
         </h3>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4 ">
-        <EntityCard value={"500 XFA"} title="Total Balance" color="green" />
-        <EntityCard value={"200 XFA"} title="Total Income" color="blue" />
-        <EntityCard value={"100 XFA"} title="Total Expenses" color="red" />
+        <EntityCard
+          value={`${totalIncome - totalExpense} XAF`}
+          title="Total Balance"
+          color="green"
+        />
+        <EntityCard
+          value={`${totalIncome} XAF`}
+          title="Total Income"
+          color="blue"
+        />
+        <EntityCard
+          value={`${totalExpense} XAF`}
+          title="Total Expenses"
+          color="red"
+        />
       </div>
+      <FinanceFilter
+        availableYears={[2023, 2024, 2025]}
+        onFilterChange={handleFilterChange}
+      />
       <FinanceTable
         data={finances || []}
         handleDelete={handleDelete}
