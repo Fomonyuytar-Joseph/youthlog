@@ -32,7 +32,7 @@ const deleteFinanceSlice = createSlice({
       .addCase(deleteFinanceThunk.fulfilled, (state, action) => {
         state.requestResponse.status = ApiRequestStatus.FULFILLED;
         state.requestResponse.data = action.payload;
-        state.finance = action.payload; // assuming payload has been deleted
+        state.finance = action.payload;
       })
       .addCase(deleteFinanceThunk.rejected, (state, action) => {
         state.requestResponse.status = ApiRequestStatus.REJECTED;
