@@ -6,7 +6,7 @@ export const deleteFinanceThunk = createAsyncThunk(
   async (id: string, thunkAPI) => {
     try {
       const res = await api.delete(`/finances/delete-finance/${id}`);
-      return res.data; // should return deleted finance info
+      return res.data;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.log(err, "delete finance thunk error");
