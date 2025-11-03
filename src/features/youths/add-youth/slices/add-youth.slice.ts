@@ -32,13 +32,11 @@ const addYouthSlice = createSlice({
       .addCase(addYouthThunk.fulfilled, (state, action) => {
         state.requestResponse.status = ApiRequestStatus.FULFILLED;
         state.requestResponse.data = action.payload;
-        console.log("youth added:", action.payload);
-        state.youth = action.payload; // assuming payload has been added
+        state.youth = action.payload; 
       })
       .addCase(addYouthThunk.rejected, (state, action) => {
         state.requestResponse.status = ApiRequestStatus.REJECTED;
         state.requestResponse.error = action.error ?? "Something went wrong";
-        console.log(state.requestResponse);
       });
   },
 });
