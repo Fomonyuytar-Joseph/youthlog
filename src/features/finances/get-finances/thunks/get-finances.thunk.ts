@@ -8,7 +8,7 @@ export const getFinancesThunk = createAsyncThunk(
     try {
       const { year, month } = data;
       const res = await api.get(`/finances/get-finances/?year=${year}&month=${month}`);
-      return res.data; // should return finances info
+      return res.data; 
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
