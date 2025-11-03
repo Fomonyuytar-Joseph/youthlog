@@ -36,8 +36,7 @@ const getFinancesSlice = createSlice({
       .addCase(getFinancesThunk.fulfilled, (state, action) => {
         state.requestResponse.status = ApiRequestStatus.FULFILLED;
         state.requestResponse.data = action.payload;
-        console.log("finances fetched:", action.payload);
-        state.finances = action.payload.finances; // assuming payload has finances
+        state.finances = action.payload.finances; 
         state.totalIncome = action.payload.totalIncome;
         state.totalExpense = action.payload.totalExpense;
       })
