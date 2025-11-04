@@ -1,6 +1,6 @@
-export interface AttendanceChartType{
-    day:string;
-    attendees:number;
+export interface AttendanceChartType {
+  day: string;
+  attendees: number;
 }
 
 export type AttendanceType = {
@@ -10,4 +10,16 @@ export type AttendanceType = {
   total: number | string;
   absent?: number | string;
   attendanceRecords?: { id: string; present: boolean }[];
+};
+
+export type AttendanceRequestType = {
+  youthId: string;
+  date: string;
+  type: string;
+  present: boolean;
+};
+
+export type AddAttendanceResponseType = {
+  message: string;
+  count: number | string;
 };
