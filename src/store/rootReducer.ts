@@ -6,6 +6,9 @@ import deleteYouthSlice from "@/features/youths/delete-youth/slices/delete-youth
 import getFinanceSlice from "@/features/finances/get-finances/slices/get-finances.slice";
 import addFinanceSlice from "@/features/finances/add-finance/slices/add-finance.slice";
 import deleteFinanceSlice from "@/features/finances/delete-finance/slices/delete-finance.slice";
+import getAttendanceSlice from "@/features/attendances/get-attendances/slices/get-attendances.slice";
+import deleteAttendanceSlice from "@/features/attendances/delete-attendance/slices/delete-attendance.slice";
+import addAttendanceSlice from "@/features/attendances/add-attendance/slices/add-attendance.slice";
 
 const rootReducer = {
   exampleSlice,
@@ -16,6 +19,9 @@ const rootReducer = {
   getFinanceSlice,
   addFinanceSlice,
   deleteFinanceSlice,
+  getAttendanceSlice,
+  addAttendanceSlice,
+  deleteAttendanceSlice,
 };
 
 export default rootReducer;

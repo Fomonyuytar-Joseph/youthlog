@@ -1,20 +1,28 @@
 "use client";
 import AddButton from "@/components/atoms/add-button/add-button.atom";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AttendanceTable from "../tables/attendance-table/attendance-table.organism";
 import EntityCard from "@/components/molecules/finance-card/entity-card.molecule";
 import TakeAttendanceModal from "../modals/add-modals/take-attendance-modal/take-attendance-modal.organism";
 import DeleteModal from "../modals/delete-modal/delete-modal.organism";
 import { attendanceDummyData, membersDummyData } from "@/constants/data";
-import { AttendanceType } from "@/types/attendance.type";
+import { AttendanceRequestType, AttendanceType } from "@/types/attendance.type";
 import { EditAttendanceModal } from "../modals/edit-modals/edit-attendance-modal/edit-attendance-modal.organism";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks/use-app";
+import { getAttendancesThunk } from "@/features/attendances/get-attendances/thunks/get-attendances.thunks";
+import { getYouthsThunk } from "@/features/youths/get-youths/thunks/get-youths.thunk";
 
 const AttendancePage = () => {
+  const dispatch = useAppDispatch();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [isEditModal, setIsEditModal] = useState(false);
+  const [youthAttendance, setYouthAttendance] = useState(
+    [] as AttendanceRequestType[]
+  );
   const [selectedAttendance, setSelectedAttendance] =
     useState<AttendanceType | null>({} as AttendanceType);
+  const { youths } = useAppSelector((state) => state.getYouthsSlice);
 
   const handleDelete = (attendance: AttendanceType) => {
     setSelectedAttendance(attendance);
@@ -33,6 +41,17 @@ const AttendancePage = () => {
     console.log("Updated Attendance:", updatedRecords);
     // setAttendanceRecords(updatedRecords); // Save to state or send to backend
   };
+
+  const handleTakeAttendance = () => {
+    console.log("Attendance to be submitted:", youthAttendance);
+    // TODO: send to backend
+  };
+
+  useEffect(() => {
+    dispatch(getAttendancesThunk());
+    dispatch(getYouthsThunk());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div>
@@ -55,6 +74,9 @@ const AttendancePage = () => {
         <TakeAttendanceModal
           isOpen={isAddModalOpen}
           setIsOpen={setIsAddModalOpen}
+          youths={youths || []}
+          setYouthAttendance={setYouthAttendance}
+          onClick={handleTakeAttendance}
         />
       )}
 
