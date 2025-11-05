@@ -1,12 +1,14 @@
 import api from "@/lib/axios";
+import { GetFinanceRequestType } from "@/types/finance.type";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const getFinancesThunk = createAsyncThunk(
   "finances/get-finances",
-  async (_, thunkAPI) => {
+  async (data: GetFinanceRequestType, thunkAPI) => {
     try {
-      const res = await api.get("/finances/get-finances");
-      return res.data; // should return finances info
+      const { year, month } = data;
+      const res = await api.get(`/finances/get-finances/?year=${year}&month=${month}`);
+      return res.data; 
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {

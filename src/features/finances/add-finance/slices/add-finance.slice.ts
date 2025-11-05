@@ -9,7 +9,7 @@ interface AddFinanceState {
 }
 
 const initialState: AddFinanceState = {
-  finance:{} as FinanceResponseType,
+  finance: {} as FinanceResponseType,
   requestResponse: {
     status: ApiRequestStatus.IDLE,
     data: [],
@@ -32,8 +32,7 @@ const addFinanceSlice = createSlice({
       .addCase(addFinanceThunk.fulfilled, (state, action) => {
         state.requestResponse.status = ApiRequestStatus.FULFILLED;
         state.requestResponse.data = action.payload;
-        console.log("finance added:", action.payload);
-        state.finance = action.payload; // assuming payload has youths
+        state.finance = action.payload;
       })
       .addCase(addFinanceThunk.rejected, (state, action) => {
         state.requestResponse.status = ApiRequestStatus.REJECTED;

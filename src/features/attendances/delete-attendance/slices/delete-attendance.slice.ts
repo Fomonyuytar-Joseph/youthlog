@@ -1,40 +1,40 @@
 import { ApiRequestDataType, ApiRequestStatus } from "@/types/api/api.types";
 import { createSlice } from "@reduxjs/toolkit";
-import { deleteFinanceThunk } from "../thunks/delete-finance.thunk";
-import { FinanceResponseType } from "@/types/finance.type";
+import { deleteAttendanceThunk } from "../thunks/delete-attendance.thunk";
 
-interface deleteFinanceState {
-  finance: FinanceResponseType | null;
+interface deleteAttendanceState {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  attendance: any;
   requestResponse: ApiRequestDataType;
 }
 
-const initialState: deleteFinanceState = {
-  finance: {} as FinanceResponseType,
+const initialState: deleteAttendanceState = {
+  attendance: {},
   requestResponse: {
     status: ApiRequestStatus.IDLE,
     data: [],
   },
 };
 
-const deleteFinanceSlice = createSlice({
-  name: "deleteFinance",
+const deleteAttendanceSlice = createSlice({
+  name: "deleteAttendance",
   initialState,
   reducers: {
-    resetDeleteFinanceState(state) {
+    resetDeleteAttendanceState(state) {
       state.requestResponse.status = ApiRequestStatus.IDLE;
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(deleteFinanceThunk.pending, (state) => {
+      .addCase(deleteAttendanceThunk.pending, (state) => {
         state.requestResponse.status = ApiRequestStatus.PENDING;
       })
-      .addCase(deleteFinanceThunk.fulfilled, (state, action) => {
+      .addCase(deleteAttendanceThunk.fulfilled, (state, action) => {
         state.requestResponse.status = ApiRequestStatus.FULFILLED;
         state.requestResponse.data = action.payload;
-        state.finance = action.payload;
+        state.attendance = action.payload; // assuming payload has been deleted
       })
-      .addCase(deleteFinanceThunk.rejected, (state, action) => {
+      .addCase(deleteAttendanceThunk.rejected, (state, action) => {
         state.requestResponse.status = ApiRequestStatus.REJECTED;
         state.requestResponse.error = action.error ?? "Something went wrong";
         console.log(state.requestResponse);
@@ -42,5 +42,5 @@ const deleteFinanceSlice = createSlice({
   },
 });
 
-export const { resetDeleteFinanceState } = deleteFinanceSlice.actions;
-export default deleteFinanceSlice.reducer;
+export const { resetDeleteAttendanceState } = deleteAttendanceSlice.actions;
+export default deleteAttendanceSlice.reducer;

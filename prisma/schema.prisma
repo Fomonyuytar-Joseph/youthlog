@@ -31,7 +31,7 @@ model Member {
 
 model Attendance {
   id         String         @id @default(cuid())
-  memberId   String?
+  memberId   String
   date       DateTime
   type       AttendanceType
   present    Boolean?

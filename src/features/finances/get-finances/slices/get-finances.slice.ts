@@ -5,11 +5,15 @@ import { FinanceResponseType } from "@/types/finance.type";
 
 interface GetFinancesState {
   finances: FinanceResponseType[] | null;
+  totalIncome: number;
+  totalExpense: number;
   requestResponse: ApiRequestDataType;
 }
 
 const initialState: GetFinancesState = {
   finances: [] as FinanceResponseType[],
+  totalIncome: 0,
+  totalExpense: 0,
   requestResponse: {
     status: ApiRequestStatus.IDLE,
     data: [],
@@ -32,8 +36,9 @@ const getFinancesSlice = createSlice({
       .addCase(getFinancesThunk.fulfilled, (state, action) => {
         state.requestResponse.status = ApiRequestStatus.FULFILLED;
         state.requestResponse.data = action.payload;
-        console.log("finances fetched:", action.payload);
-        state.finances = action.payload; // assuming payload has finances
+        state.finances = action.payload.finances; 
+        state.totalIncome = action.payload.totalIncome;
+        state.totalExpense = action.payload.totalExpense;
       })
       .addCase(getFinancesThunk.rejected, (state, action) => {
         state.requestResponse.status = ApiRequestStatus.REJECTED;

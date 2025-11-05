@@ -24,18 +24,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { AttendanceType } from "@/types/attendance.type";
+import { SummaryType } from "@/types/attendance.type";
 
 interface AttendanceTableProps {
-  data: AttendanceType[];
-  handleDelete :(attendance:AttendanceType)=>void
-  handleEdit :(attendance:AttendanceType)=>void
+  data: SummaryType[];
+  handleDelete :(attendance:SummaryType)=>void
+  handleEdit :(attendance:SummaryType)=>void
 }
 
 
 
 const AttendanceTable:React.FC<AttendanceTableProps> = ({data,handleDelete,handleEdit}) => {
- const columns: ColumnDef<AttendanceType>[] = [
+ const columns: ColumnDef<SummaryType>[] = [
    {
      id: "select",
      header: ({ table }) => (

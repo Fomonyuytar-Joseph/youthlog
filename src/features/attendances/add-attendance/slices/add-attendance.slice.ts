@@ -1,45 +1,45 @@
 import { ApiRequestDataType, ApiRequestStatus } from "@/types/api/api.types";
 import { createSlice } from "@reduxjs/toolkit";
-import { addYouthThunk } from "../thunks/add-youth.thunk";
-import { YouthsResponseType } from "@/types/members.type";
+import { addAttendanceThunk } from "../thunks/add-attendance.thunk";
 
-interface addYouthState {
-  youth: YouthsResponseType | null;
+interface addAttendanceState {
+  count: number | string;
+
   requestResponse: ApiRequestDataType;
 }
 
-const initialState: addYouthState = {
-  youth: {} as YouthsResponseType,
+const initialState: addAttendanceState = {
+  count: 0,
   requestResponse: {
     status: ApiRequestStatus.IDLE,
     data: [],
   },
 };
 
-const addYouthSlice = createSlice({
-  name: "addYouth",
+const addAttendanceSlice = createSlice({
+  name: "addAttendance",
   initialState,
   reducers: {
-    resetAddYouthState(state) {
+    resetAddAttendanceState(state) {
       state.requestResponse.status = ApiRequestStatus.IDLE;
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(addYouthThunk.pending, (state) => {
+      .addCase(addAttendanceThunk.pending, (state) => {
         state.requestResponse.status = ApiRequestStatus.PENDING;
       })
-      .addCase(addYouthThunk.fulfilled, (state, action) => {
+      .addCase(addAttendanceThunk.fulfilled, (state, action) => {
         state.requestResponse.status = ApiRequestStatus.FULFILLED;
         state.requestResponse.data = action.payload;
-        state.youth = action.payload; 
+        state.count = action.payload.count; 
       })
-      .addCase(addYouthThunk.rejected, (state, action) => {
+      .addCase(addAttendanceThunk.rejected, (state, action) => {
         state.requestResponse.status = ApiRequestStatus.REJECTED;
         state.requestResponse.error = action.error ?? "Something went wrong";
       });
   },
 });
 
-export const { resetAddYouthState } = addYouthSlice.actions;
-export default addYouthSlice.reducer;
+export const { resetAddAttendanceState } = addAttendanceSlice.actions;
+export default addAttendanceSlice.reducer;
