@@ -1,15 +1,19 @@
 import { ApiRequestDataType, ApiRequestStatus } from "@/types/api/api.types";
 import { createSlice } from "@reduxjs/toolkit";
 import { getAttendancesThunk } from "../thunks/get-attendances.thunks";
+import { SummaryType } from "@/types/attendance.type";
 
 interface GetAttendanceState {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  attendances: any;
+  attendances: SummaryType[];
+  highestAttendance: number;
+  lowestAttendance: number;
   requestResponse: ApiRequestDataType;
 }
 
 const initialState: GetAttendanceState = {
   attendances: [],
+  highestAttendance: 0,
+  lowestAttendance: 0,
   requestResponse: {
     status: ApiRequestStatus.IDLE,
     data: [],
@@ -32,8 +36,9 @@ const getAttendancesSlice = createSlice({
       .addCase(getAttendancesThunk.fulfilled, (state, action) => {
         state.requestResponse.status = ApiRequestStatus.FULFILLED;
         state.requestResponse.data = action.payload;
-        console.log("attendances fetched:", action.payload);
-        state.attendances = action.payload; // assuming payload has attendances
+        state.attendances = action.payload.summary; 
+        state.highestAttendance = action.payload.highestAttendance;
+        state.lowestAttendance = action.payload.lowestAttendance;
       })
       .addCase(getAttendancesThunk.rejected, (state, action) => {
         state.requestResponse.status = ApiRequestStatus.REJECTED;

@@ -7,6 +7,7 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
     const { attendances } = body;
+    console.log("Received attendances:", attendances);
 
     if (!Array.isArray(attendances) || attendances.length === 0) {
       return NextResponse.json(
@@ -17,7 +18,7 @@ export async function POST(req: Request) {
 
     // Validate required fields
     for (const record of attendances) {
-      if (!record.memberId || !record.date || !record.type) {
+      if (!record.youthId || !record.date || !record.type) {
         return NextResponse.json(
           { error: "Each record must have memberId, date, and type" },
           { status: 400 }

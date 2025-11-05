@@ -23,3 +23,16 @@ export type AddAttendanceResponseType = {
   message: string;
   count: number | string;
 };
+
+export interface GetAttendanceResponse {
+  summary: SummaryType[];
+  highestAttendance: number;
+  lowestAttendance: number;
+}
+
+export interface SummaryType {
+  date: Date;
+  present: number;
+  absent: number;
+}
+

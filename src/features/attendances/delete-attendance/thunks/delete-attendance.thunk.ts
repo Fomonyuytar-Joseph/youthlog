@@ -3,9 +3,9 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const deleteAttendanceThunk = createAsyncThunk(
   "attendance/delete-attendance",
-  async (id: string, thunkAPI) => {
+  async (date: string, thunkAPI) => {
     try {
-      const res = await api.delete(`/attendance/delete-attendance/${id}`);
+      const res = await api.delete(`/attendance/delete-attendance/${date}`);
       return res.data; // should return deleted attendance info
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {

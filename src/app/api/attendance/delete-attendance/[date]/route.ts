@@ -6,11 +6,11 @@ const prisma = new PrismaClient();
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { date: string } }
 ) {
-  const attendanceId = params.id;
-  const deletedAttendance = await prisma.attendance.delete({
-    where: { id: attendanceId },
+  const attendanceDate = params.date;
+  const deletedAttendance = await prisma.attendance.deleteMany({
+    where: { date: new Date(attendanceDate) },
   });
   return NextResponse.json(deletedAttendance);
 }

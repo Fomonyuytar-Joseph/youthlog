@@ -18,6 +18,7 @@ interface TakeAttendanceModalProps {
   setYouthAttendance: React.Dispatch<
     React.SetStateAction<AttendanceRequestType[]>
   >;
+  loading:boolean
 }
 
 export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({
@@ -26,6 +27,7 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({
   youths,
   setYouthAttendance,
   onClick,
+  loading
 }) => {
   const [attendance, setAttendance] = React.useState<
     Record<string | number, boolean>
@@ -36,37 +38,51 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({
   const [search, setSearch] = React.useState("");
   const [sortAsc, setSortAsc] = React.useState(true);
 
+  console.log(formData)
+
   const toggleAttendance = (id: number | string) => {
+    console.log(formData ,'sds');
     setAttendance((prev) => ({
       ...prev,
       [id]: !prev[id],
     }));
 
     setYouthAttendance((prev) => {
-      const existingRecordIndex = prev.findIndex(
-        (record) => record.youthId === id.toString()
-      );
-      const isPresent = !(attendance[id] || false); // because state update is async
+      const isPresent = !(attendance[id] || false); // since update is async
 
-      if (existingRecordIndex !== -1) {
-        // Update existing record
-        const updatedRecords = [...prev];
-        updatedRecords[existingRecordIndex].present = isPresent;
-        return updatedRecords;
-      } else {
-        // Add new record
-        return [
-          ...prev,
-          {
-            youthId: id.toString(),
-            date: formData.date,
-            type: "YOUTH_MEETING", // or any other logic to determine type
-            present: isPresent,
-          },
-        ];
+      const updated = prev.map((record) =>
+        record.youthId === id.toString()
+          ? { ...record, present: isPresent }
+          : record
+      );
+
+      // If not found, add a new record
+      if (!updated.some((r) => r.youthId === id.toString())) {
+        updated.push({
+          youthId: id.toString(),
+          date: formData.date,
+          type: "YOUTH_MEETING",
+          present: isPresent,
+        });
       }
+
+      // If you have a list of all youths, ensure everyone is represented:
+      const completeList = youths.map((y) => {
+        const existing = updated.find((r) => r.youthId === y.id.toString());
+        return (
+          existing ?? {
+            youthId: y.id.toString(),
+            date: formData.date,
+            type: "YOUTH_MEETING",
+            present: false,
+          }
+        );
+      });
+
+      return completeList;
     });
   };
+
 
   const markAll = (present: boolean) => {
     const updated: Record<number | string, boolean> = {};
@@ -74,6 +90,16 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({
       updated[m.id] = present;
     });
     setAttendance(updated);
+    const allPresent = youths.map((y)=>{
+      return {
+        youthId: y.id.toString(),
+        date: formData.date,
+        type: "YOUTH_MEETING",
+        present: true,
+      };
+    })
+
+    setYouthAttendance(allPresent)
   };
 
 
@@ -92,6 +118,7 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({
       setIsOpen={setIsOpen}
       onPrimaryButtonClick={onClick}
       primaryButtonText="Take Attendance"
+      loading={loading}
     >
       <div className="flex items-center justify-between mb-3">
         {/* Search + Sort */}

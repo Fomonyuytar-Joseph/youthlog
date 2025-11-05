@@ -5,7 +5,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 // Example async request (GET)
 export const addAttendanceThunk = createAsyncThunk(
   "attendance/add-attendance",
-  async (attendances: AttendanceRequestType, thunkAPI) => {
+  async (attendances: AttendanceRequestType[], thunkAPI) => {
     try {
       const res = await api.post("/attendance/add-attendance", {
         attendances,
